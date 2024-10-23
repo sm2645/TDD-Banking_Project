@@ -3,7 +3,7 @@ public abstract class Accounts {
 	private final String ID;
 	private double balance;
 
-	public Accounts(String ID, double APR, double balance) {
+	private Accounts(String ID, double APR, double balance) {
 		this.balance = balance;
 		this.APR = APR;
 		this.ID = ID;
