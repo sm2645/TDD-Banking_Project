@@ -7,7 +7,7 @@ public class SavingsTest {
 
 	@Test
 	public void saving_starting_balance_of_one() {
-		savings = new Savings();
+		savings = new Savings("12345678", 7.5);
 		assertEquals(savings.getBalance(), 0);
 	}
 }

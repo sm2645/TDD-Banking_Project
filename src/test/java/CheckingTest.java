@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 public class CheckingTest {
 	@Test
 	public void checking_starting_balance_of_zero() {
-		Savings saving = new Savings();
-		assertEquals(saving.getBalance(), 0);
+		Checking checking = new Checking("12345678", 7.5);
+		assertEquals(checking.getBalance(), 0);
 	}
 }

@@ -9,7 +9,7 @@ public class AccountsTest {
 
 	@BeforeEach
 	public void setUp() {
-		account = new CD(2.0, 1000.0);
+		account = new CD("12345678", 2.0, 1000.0);
 	}
 
 	@Test

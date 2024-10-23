@@ -5,7 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BankTest {
-	public static final int ACCOUNT_ID = 12345678;
+	public static final String ACCOUNT_ID = "12345678";
+	public static final String SECOND_ACCOUNT_ID = "12345679";
 	public static final double SAVINGS_APR = 2.5;
 	Bank bank;
 	CD cdAccount;
@@ -13,7 +14,7 @@ public class BankTest {
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
-		cdAccount = new CD(SAVINGS_APR, 100);
+		cdAccount = new CD(ACCOUNT_ID, SAVINGS_APR, 100);
 	}
 
 	@Test
@@ -31,10 +32,10 @@ public class BankTest {
 	@Test
 	void add_two_accounts_with_modified_id_and_name() {
 		bank.addAccount(ACCOUNT_ID, cdAccount);
-		bank.addAccount(ACCOUNT_ID + 1, new Savings(SAVINGS_APR));
+		bank.addAccount(SECOND_ACCOUNT_ID, new Savings(SECOND_ACCOUNT_ID, SAVINGS_APR));
 
 		assertEquals(cdAccount, bank.getAccounts().get(ACCOUNT_ID));
-		assertEquals(SAVINGS_APR, bank.getAccounts().get(ACCOUNT_ID + 1).getAPR());
+		assertEquals(SAVINGS_APR, bank.getAccounts().get(SECOND_ACCOUNT_ID).getAPR());
 	}
 
 	@Test

@@ -1,10 +1,13 @@
 public abstract class Accounts {
 	private final double APR;
+	private final String ID;
 	private double balance;
 
-	public Accounts(double APR, double balance) {
+	public Accounts(String ID, double APR, double balance) {
 		this.balance = balance;
 		this.APR = APR;
+		this.ID = ID;
+
 	}
 
 	public double getBalance() {
@@ -14,6 +17,10 @@ public abstract class Accounts {
 
 	public double getAPR() {
 		return APR;
+	}
+
+	public String getID() {
+		return ID;
 	}
 
 	public void deposit(double amount) {
