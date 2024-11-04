@@ -1,11 +1,59 @@
-public class CreateValidator {
-	private Bank bank;
+import java.util.Objects;
 
-	public CreateValidator(Bank bank) {
+public class CreateValidator {
+	private final Bank bank;
+	private final CommandValidator commandValidator;
+
+	public CreateValidator(Bank bank, CommandValidator commandValidator) {
 		this.bank = bank;
+		this.commandValidator = commandValidator;
 	}
 
 	public boolean validate(String[] commandSeparated) {
-		return true;
+		if (commandSeparated.length < 4 || commandSeparated.length > 5) {
+			return false;
+		}
+
+		String accountType = commandSeparated[1];
+		String accountId = commandSeparated[2];
+		String apr = commandSeparated[3];
+		String balance = null;
+
+		if (bank.ifAccountExists(accountId)) {
+			return false;
+		}
+
+		if (Objects.equals(accountType, "cd")) {
+			if (commandSeparated.length != 5) {
+				return false;
+			}
+			balance = commandSeparated[4];
+		}
+		if (Objects.equals(accountType, "cd")) {
+			return commandValidator.isValidAccountId(accountId) && isValidApr(apr)
+					&& commandValidator.isValidBalance(balance);
+		} else {
+			return isValidAccountType(accountType) && commandValidator.isValidAccountId(accountId) && isValidApr(apr);
+		}
+
 	}
+
+	public boolean isValidAccountType(String type) {
+		return Objects.equals(type, "savings") || Objects.equals(type, "checking") || Objects.equals(type, "cd");
+	}
+
+	public boolean isValidApr(String apr) {
+		if (apr == null || apr.isEmpty()) {
+			return false;
+		}
+
+		try {
+			double aprValue = Double.parseDouble(apr);
+			return aprValue >= 0 && aprValue <= 1;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
+	}
+
 }
