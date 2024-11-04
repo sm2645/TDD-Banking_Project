@@ -3,10 +3,10 @@ public class CommandValidator {
 	private DepositValidator depositValidator;
 	private Bank bank;
 
-	public CommandValidator(Bank bank) {
+	public CommandValidator(Bank bank, CreateValidator createValidator, DepositValidator depositValidator) {
 		this.bank = bank;
-		this.createValidator = CreateValidator(bank);
-		this.depositValidator = DepositValidator(bank);
+		this.createValidator = createValidator;
+		this.depositValidator = depositValidator;
 	}
 
 	public boolean validate(String command) {
@@ -18,10 +18,9 @@ public class CommandValidator {
 		String functionPurpose = commandSeparated[0];
 
 		return switch (functionPurpose) {
-		case "create" -> validateCreate(commandSeparated);
-		case "deposit" -> validateDeposit(commandSeparated);
+		case "create" -> createValidator.validate(commandSeparated);
+		case "deposit" -> depositValidator.validate(commandSeparated);
 		default -> false;
 		};
-
 	}
 }

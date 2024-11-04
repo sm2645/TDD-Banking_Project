@@ -12,10 +12,9 @@ public class CommandValidatorTest {
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
-		commandValidator = new CommandValidator(bank);
-		createValidator = new CreateValidator(bank):
+		createValidator = new CreateValidator(bank);
 		depositValidator = new DepositValidator(bank);
-
+		commandValidator = new CommandValidator(bank, createValidator, depositValidator);
 	}
 
 	@Test
