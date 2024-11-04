@@ -1,8 +1,12 @@
 public class CommandValidator {
+	private CreateValidator createValidator;
+	private DepositValidator depositValidator;
 	private Bank bank;
 
 	public CommandValidator(Bank bank) {
 		this.bank = bank;
+		this.createValidator = CreateValidator(bank);
+		this.depositValidator = DepositValidator(bank);
 	}
 
 	public boolean validate(String command) {
@@ -11,9 +15,9 @@ public class CommandValidator {
 			return false;
 		}
 
-		String function = commandSeparated[0];
+		String functionPurpose = commandSeparated[0];
 
-		return switch (function) {
+		return switch (functionPurpose) {
 		case "create" -> validateCreate(commandSeparated);
 		case "deposit" -> validateDeposit(commandSeparated);
 		default -> false;
