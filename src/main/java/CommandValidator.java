@@ -6,7 +6,18 @@ public class CommandValidator {
 	}
 
 	public boolean validate(String command) {
-		return true;
+		String[] commandSeparated = command.split(" ");
+		if (commandSeparated.length < 3) {
+			return false;
+		}
+
+		String function = commandSeparated[0];
+
+		return switch (function) {
+		case "create" -> validateCreate(commandSeparated);
+		case "deposit" -> validateDeposit(commandSeparated);
+		default -> false;
+		};
 
 	}
 }
