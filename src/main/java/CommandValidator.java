@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class CommandValidator {
 	private CreateValidator createValidator;
 	private DepositValidator depositValidator;
@@ -23,4 +25,9 @@ public class CommandValidator {
 		default -> false;
 		};
 	}
+
+	public boolean isValidAccountType(String type) {
+		return Objects.equals(type, "savings") || Objects.equals(type, "checking") || Objects.equals(type, "cd");
+	}
+
 }
