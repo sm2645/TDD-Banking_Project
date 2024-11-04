@@ -31,8 +31,12 @@ public class CreateValidator {
 		}
 		if (Objects.equals(accountType, "cd")) {
 			return commandValidator.isValidAccountId(accountId) && isValidApr(apr)
-					&& commandValidator.isValidBalance(balance);
+					&& commandValidator.isValidBalance(balance)
+					&& (Double.parseDouble(balance) >= 1000 && Double.parseDouble(balance) <= 10000);
 		} else {
+			if (commandSeparated.length != 4) {
+				return false;
+			}
 			return isValidAccountType(accountType) && commandValidator.isValidAccountId(accountId) && isValidApr(apr);
 		}
 
@@ -49,7 +53,7 @@ public class CreateValidator {
 
 		try {
 			double aprValue = Double.parseDouble(apr);
-			return aprValue >= 0 && aprValue <= 1;
+			return aprValue >= 0 && aprValue <= 10;
 		} catch (NumberFormatException e) {
 			return false;
 		}
