@@ -1,3 +1,4 @@
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ public class CommandValidatorTest {
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
+		commandValidator = new CommandValidator(bank, null, null);
 		createValidator = new CreateValidator(bank, commandValidator);
 		depositValidator = new DepositValidator(bank);
 		commandValidator = new CommandValidator(bank, createValidator, depositValidator);
@@ -19,19 +21,26 @@ public class CommandValidatorTest {
 
 	@Test
 	void valid_command() {
-		boolean actual = commandValidator.validate("create savings 12345678 0.5");
+		boolean actual = commandValidator.validate("create savings 12345676 0.5");
 		assertTrue(actual);
 	}
 
 	@Test
-	void test_is_valid_account_type() {
+	void is_account_type_valid() {
 		assertTrue(createValidator.isValidAccountType("savings"));
 		assertTrue(createValidator.isValidAccountType("cd"));
 	}
 
 	@Test
-	void testIsValidApr() {
+	void is_apr_valid() {
 		assertTrue(createValidator.isValidApr("0.0"));
+	}
+
+	@Test
+	void duplicate_id_is_invalid() {
+		bank.addAccount("12345678", new Savings("12345678", 0.5));
+		boolean actual = commandValidator.validate("create savings 12345678 0.5");
+		assertFalse(actual);
 	}
 
 }
