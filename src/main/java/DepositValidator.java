@@ -20,7 +20,17 @@ public class DepositValidator {
 		if (account instanceof CD) {
 			return false;
 		}
+		if (!commandValidator.isValidAccountId(accountId) || !commandValidator.isValidBalance(amount)) {
+			return false;
+		}
+		if (account instanceof Savings && Double.parseDouble(amount) > 2500) {
+			return false;
+		}
 
-		return commandValidator.isValidAccountId(accountId) && commandValidator.isValidBalance(amount);
+		if (account instanceof Checking && Double.parseDouble(amount) > 1000) {
+			return false;
+		}
+
+		return true;
 	}
 }

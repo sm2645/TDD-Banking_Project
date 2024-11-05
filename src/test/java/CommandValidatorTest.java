@@ -17,7 +17,10 @@ public class CommandValidatorTest {
 		createValidator = new CreateValidator(bank, commandValidator);
 		depositValidator = new DepositValidator(bank, commandValidator);
 		commandValidator = new CommandValidator(bank, createValidator, depositValidator);
-		bank.addAccount("12345678", new Checking("12345678", 0.01));
+		bank.addAccount("13345678", new Checking("13345678", 0.01));
+		bank.addAccount("97654321", new Savings("97654321", 0.01));
+		bank.addAccount("18345679", new CD("18345679", 2.5, 1000));
+
 	}
 
 	@Test
@@ -156,9 +159,73 @@ public class CommandValidatorTest {
 		assertFalse(actual);
 	}
 
+//deposit
 	@Test
-	void test_valid_deposit_checking_valid_test() {
-		boolean actual = commandValidator.validate("deposit 12345678 500");
+	void attempt_to_deposit_into_cd_invalid_test() {
+		boolean actual = commandValidator.validate("deposit 18345679 500");
+		assertFalse(actual);
+	}
+
+	@Test
+	void exceeds_savings_deposit_limit_invalid_test() {
+		boolean actual = commandValidator.validate("deposit 97654321 3000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void exceeds_checking_deposit_limit_invalid_test() {
+		boolean actual = commandValidator.validate("deposit 13345678 1500");
+		assertFalse(actual);
+	}
+
+	@Test
+	void invalid_account_id_invalid_test() {
+		boolean actual = commandValidator.validate("deposit 8765432 500");
+		assertFalse(actual);
+	}
+
+	@Test
+	void non_number_parameters_invalid_test() {
+		boolean actual = commandValidator.validate("deposit 13345678 mclwest");
+		assertFalse(actual);
+	}
+
+	@Test
+	void valid_deposit_checking_valid_test() {
+		boolean actual = commandValidator.validate("deposit 13345678 500");
 		assertTrue(actual);
 	}
+
+	@Test
+	void valid_deposit_savings_valid_test() {
+		boolean actual = commandValidator.validate("deposit 97654321 200");
+		assertTrue(actual);
+	}
+
+	@Test
+	void zero_deposit_valid_test() {
+		boolean actual = commandValidator.validate("deposit 13345678 0");
+		assertTrue(actual);
+	}
+//Missing parameters
+	// Missing Apr and ID is above in its respective sections
+
+	@Test
+	void missing_parameters_invalid_test() {
+		boolean actual = commandValidator.validate("deposit");
+		assertFalse(actual);
+	}
+
+	@Test
+	void missing_create_parameter_invalid_test() {
+		boolean actual = commandValidator.validate("cd 12345678 2.5");
+		assertFalse(actual);
+	}
+
+	@Test
+	void missing_account_type_invalid_test() {
+		boolean actual = commandValidator.validate("create 12345678 2.5");
+		assertFalse(actual);
+	}
+
 }
