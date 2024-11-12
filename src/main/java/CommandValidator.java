@@ -8,6 +8,7 @@ public class CommandValidator {
 	}
 
 	public boolean validate(String command) {
+		command = command.toLowerCase();
 		String[] commandSeparated = command.split(" ");
 		if (commandSeparated.length < 3) {
 			return false;

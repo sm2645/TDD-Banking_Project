@@ -6,74 +6,108 @@ import org.junit.jupiter.api.Test;
 
 class DepositValidatorTest {
 
-	private DepositValidator depositValidator;
+	CommandValidator commandValidator;
+	DepositValidator depositValidator;
+	Bank bank;
 
 	@BeforeEach
 	void setUp() {
-		Bank bank = new Bank();
-		CommandValidator commandValidator = new CommandValidator(bank, null, null);
+		bank = new Bank();
+		commandValidator = new CommandValidator(bank, null, null);
 		depositValidator = new DepositValidator(bank, commandValidator);
-
-		Checking checkingAccount = new Checking("87654321", 1.0);
-		Savings savingsAccount = new Savings("12345678", 1.5);
-		CD cdAccount = new CD("12345679", 5.0, 5000);
-		bank.addAccount("87654321", checkingAccount);
-		bank.addAccount("12345678", savingsAccount);
-		bank.addAccount("12345679", cdAccount);
+		commandValidator = new CommandValidator(bank, null, depositValidator);
+		bank.addAccount("13345678", new Checking("13345678", 0.01));
+		bank.addAccount("97654321", new Savings("97654321", 0.01));
+		bank.addAccount("18345679", new CD("18345679", 2.5, 1000));
 	}
 
 	@Test
-	void invalidate_incorrect_command_length_missing_parameter() {
-		String[] commandSeparated = { "deposit", "12345678" };
-		assertFalse(depositValidator.validate(commandSeparated));
+	void invalidate_commands_missing_id_parameters() {
+		assertFalse(commandValidator.validate("deposit 12345678"));
 	}
 
 	@Test
-	void invalidate_incorrect_command_length_too_many_parameters() {
-		String[] commandSeparated = { "deposit", "12345678", "3.5", "100" };
-		assertFalse(depositValidator.validate(commandSeparated));
+	void invalidate_command_with_too_many_parameters() {
+		assertFalse(commandValidator.validate("deposit 12345678 3.5 100"));
 	}
 
 	@Test
 	void invalidate_deposit_to_cd_account() {
-		String[] commandSeparated = { "deposit", "12345679", "500" };
-		assertFalse(depositValidator.validate(commandSeparated));
+		assertFalse(commandValidator.validate("deposit 18345679 500"));
 	}
 
 	@Test
 	void invalidate_deposits_exceeding_deposit_limit_for_savings() {
-		String[] commandSeparated = { "deposit", "12345678", "3000" };
-		assertFalse(depositValidator.validate(commandSeparated));
+		assertFalse(commandValidator.validate("deposit 97654321 3000"));
 	}
 
 	@Test
 	void invalidate_deposit_exceeding_limit_for_checking() {
-		String[] commandSeparated = { "deposit", "87654321", "1550" };
-		assertFalse(depositValidator.validate(commandSeparated));
+		assertFalse(commandValidator.validate("deposit 13345678 2000"));
+	}
+
+	@Test
+	void invalidate_negative_deposit_to_checking() {
+		assertFalse(commandValidator.validate("deposit 13345678 -100"));
 	}
 
 	@Test
 	void invalidate_invalid_account_id() {
-		String[] commandSeparated = { "deposit", "invalidId", "500" };
-		assertFalse(depositValidator.validate(commandSeparated));
+		assertFalse(commandValidator.validate("deposit invalidId 500"));
 	}
 
 	@Test
 	void invalidate_invalid_balance_format() {
-		String[] commandSeparated = { "deposit", "87654321", "abc" };
-		assertFalse(depositValidator.validate(commandSeparated));
+		assertFalse(commandValidator.validate("deposit 97654321 abc"));
 	}
 
 	@Test
 	void validate_correct_deposit_to_checking() {
-		String[] commandSeparated = { "deposit", "87654321", "500" };
-		assertTrue(depositValidator.validate(commandSeparated));
+		assertTrue(commandValidator.validate("deposit 13345678 500"));
 	}
 
 	@Test
 	void validate_proper_deposit_to_savings() {
-		String[] commandSeparated = { "deposit", "12345678", "1000" };
-		assertTrue(depositValidator.validate(commandSeparated));
+		assertTrue(commandValidator.validate("deposit 97654321 1000"));
 	}
 
+	@Test
+	void attempt_to_deposit_into_cd_invalid_test() {
+		assertFalse(commandValidator.validate("deposit 18345679 500"));
+	}
+
+	@Test
+	void exceeds_savings_deposit_limit_invalid_test() {
+		assertFalse(commandValidator.validate("deposit 97654321 3000"));
+	}
+
+	@Test
+	void exceeds_checking_deposit_limit_invalid_test() {
+		assertFalse(commandValidator.validate("deposit 13345678 2000"));
+	}
+
+	@Test
+	void invalid_account_id_invalid_test() {
+		assertFalse(commandValidator.validate("deposit 8765432 500"));
+	}
+
+	@Test
+	void non_number_parameters_invalid_test() {
+		assertFalse(commandValidator.validate("deposit 97654321 mclwest"));
+	}
+
+	@Test
+	void valid_deposit_checking_valid_test() {
+		assertTrue(commandValidator.validate("deposit 13345678 500"));
+	}
+
+	@Test
+	void valid_deposit_savings_valid_test() {
+		assertTrue(commandValidator.validate("deposit 97654321 200"));
+	}
+
+	@Test
+	void zero_deposit_valid_test() {
+		assertTrue(commandValidator.validate("deposit 97654321 0"));
+	}
 }

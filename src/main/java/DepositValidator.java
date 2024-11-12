@@ -16,21 +16,36 @@ public class DepositValidator {
 		String accountId = commandSeparated[1];
 		String amount = commandSeparated[2];
 		Accounts account = bank.retrieveAccount(accountId);
-
-		if (account instanceof CD) {
+		if (account == null) {
 			return false;
 		}
+		String accountType = account.getAccountType();
+
 		if (!commandValidator.isValidAccountId(accountId) || !commandValidator.isValidBalance(amount)) {
 			return false;
 		}
-		if (account instanceof Savings && Double.parseDouble(amount) > 2500) {
+
+		switch (accountType) {
+		case "Certificate of Deposit":
+			return validateCD();
+		case "Savings":
+			return validateSavings(amount);
+		case "Checking":
+			return validateChecking(amount);
+		default:
 			return false;
 		}
+	}
 
-		if (account instanceof Checking && Double.parseDouble(amount) > 1000) {
-			return false;
-		}
+	private boolean validateCD() {
+		return false;
+	}
 
-		return true;
+	private boolean validateSavings(String amount) {
+		return Double.parseDouble(amount) <= 2500;
+	}
+
+	private boolean validateChecking(String amount) {
+		return Double.parseDouble(amount) <= 1000;
 	}
 }

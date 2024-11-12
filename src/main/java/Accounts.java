@@ -3,7 +3,6 @@ public abstract class Accounts {
 	private final String ID;
 	private double balance;
 
-//comment for commit message wk8
 	public Accounts(String ID, double APR, double balance) {
 		this.balance = balance;
 		this.APR = APR;

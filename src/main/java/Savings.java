@@ -4,4 +4,9 @@ public class Savings extends Accounts {
 		super(ID, APR, 0);
 	}
 
+	@Override
+	public String getAccountType() {
+		return "Savings";
+	}
+
 }
