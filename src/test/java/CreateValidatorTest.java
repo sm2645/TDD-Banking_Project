@@ -36,20 +36,8 @@ public class CreateValidatorTest {
 	}
 
 	@Test
-	void apr_higher_than_max_is_invalid() {
-		boolean actual = commandValidator.validate("create checking 12345678 11");
-		assertFalse(actual);
-	}
-
-	@Test
-	void apr_one_less_than_max_is_valid() {
-		boolean actual = commandValidator.validate("create checking 12345678 9");
-		assertTrue(actual);
-	}
-
-	@Test
-	void apr_within_the_bounds_is_valid() {
-		boolean actual = commandValidator.validate("create checking 12345678 5");
+	void apr_as_zero_is_valid() {
+		boolean actual = commandValidator.validate("create checking 12345678 0");
 		assertTrue(actual);
 	}
 
@@ -60,8 +48,14 @@ public class CreateValidatorTest {
 	}
 
 	@Test
-	void apr_as_zero_is_valid() {
-		boolean actual = commandValidator.validate("create checking 12345678 0");
+	void apr_within_the_bounds_is_valid() {
+		boolean actual = commandValidator.validate("create checking 12345678 5");
+		assertTrue(actual);
+	}
+
+	@Test
+	void apr_one_less_than_max_is_valid() {
+		boolean actual = commandValidator.validate("create checking 12345678 9");
 		assertTrue(actual);
 	}
 
@@ -72,89 +66,123 @@ public class CreateValidatorTest {
 	}
 
 	@Test
-	void apr_that_not_a_whole_number_is_valid() {
+	void apr_higher_than_max_is_invalid() {
+		boolean actual = commandValidator.validate("create checking 12345678 11");
+		assertFalse(actual);
+	}
+
+	@Test
+	void apr_that_is_not_a_whole_number_is_valid() {
 		boolean actual = commandValidator.validate("create checking 12345678 2.2");
 		assertTrue(actual);
 	}
 
 	@Test
-	void no_id_provided_invalid_test() {
+	void create_checking_account_with_valid_apr() {
+		boolean actual = commandValidator.validate("create checking 12345678 5");
+		assertTrue(actual);
+	}
+
+	@Test
+	void create_savings_account_with_valid_apr() {
+		boolean actual = commandValidator.validate("create savings 12345678 3");
+		assertTrue(actual);
+	}
+
+	@Test
+	void create_CD_account_with_valid_apr_is_invalid() {
+		boolean actual = commandValidator.validate("create cd 12345678 7");
+		assertFalse(actual);
+	}
+
+	@Test
+	void create_with_no_id_provided_is_invalid() {
 		boolean actual = commandValidator.validate("create cd 7 1100");
 		assertFalse(actual);
 	}
 
 	@Test
-	void duplicate_id_is_invalid() {
+	void create_with_duplicate_id_is_invalid() {
 		bank.addAccount("12345678", new Savings("12345678", 0.5));
 		boolean actual = commandValidator.validate("create savings 12345678 0.5");
 		assertFalse(actual);
 	}
 
 	@Test
-	void text_as_id_invalid_test() {
+	void create_with_text_as_id_is_invalid() {
 		boolean actual = commandValidator.validate("create cd Efcecell 7 1100");
 		assertFalse(actual);
 	}
 
 	@Test
-	void too_long_id_length_invalid_test() {
+	void create_with_nine_digit_id_is_invalid() {
 		boolean actual = commandValidator.validate("create cd 123456789 7 1100");
 		assertFalse(actual);
 	}
 
 	@Test
-	void too_short_of_id_length_invalid_test() {
+	void create_with_seven_digit_id_is_invalid() {
 		boolean actual = commandValidator.validate("create cd 123456 7 1100");
 		assertFalse(actual);
 	}
 
 	@Test
-	void normal_id_valid_test() {
+	void create_with_normal_eight_digit_id_is_valid() {
 		boolean actual = commandValidator.validate("create cd 12345678 7 1100");
 		assertTrue(actual);
 	}
 
-	@Test
-	void cd_balance_below_minimum_invalid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5 999");
-		assertFalse(actual);
-	}
+	// cd
 
 	@Test
-	void cd_balance_above_maximum_invalid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5 10001");
-		assertFalse(actual);
-	}
-
-	@Test
-	void cd_negative_balance_invalid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5 -1000");
-		assertFalse(actual);
-	}
-
-	@Test
-	void cd_balance_not_specified_invalid_test() {
+	void create_cd_without_balance_is_invalid() {
 		boolean actual = commandValidator.validate("create cd 12345678 2.5");
 		assertFalse(actual);
 	}
 
 	@Test
-	void cd_balance_as_text_invalid_test() {
+	void create_cd_with_balance_as_text_is_invalid() {
 		boolean actual = commandValidator.validate("create cd 12345678 2.5 cewe");
 		assertFalse(actual);
 	}
 
 	@Test
-	void cd_balance_minimum_valid_test() {
+	void create_cd_with_negative_balance_is_invalid() {
+		boolean actual = commandValidator.validate("create cd 12345678 2.5 -1000");
+		assertFalse(actual);
+	}
+
+	@Test
+	void create_cd_with_balance_below_1000_is_invalid() {
+		boolean actual = commandValidator.validate("create cd 12345678 2.5 999");
+		assertFalse(actual);
+	}
+
+	@Test
+	void create_cd_with_balance_at_minimum_is_valid() {
 		boolean actual = commandValidator.validate("create cd 12345678 2.5 1000");
 		assertTrue(actual);
 	}
 
 	@Test
-	void cd_balance_within_normal_range_valid_test() {
+	void create_cd_with_balance_within_normal_range_is_valid() {
 		boolean actual = commandValidator.validate("create cd 12345678 2.5 5000");
 		assertTrue(actual);
 	}
+
+	@Test
+	void create_cd_with_balance_at_maximum_is_valid() {
+		boolean actual = commandValidator.validate("create cd 12345678 2.5 10000");
+		assertTrue(actual);
+	}
+
+	@Test
+	void create_cd_with_balance_above_10000_is_invalid() {
+		boolean actual = commandValidator.validate("create cd 12345678 2.5 10001");
+		assertFalse(actual);
+	}
+
+//savings
 
 	@Test
 	void savings_initiated_with_a_balance_is_invalid_test() {
@@ -169,32 +197,39 @@ public class CreateValidatorTest {
 	}
 
 	@Test
-	void missing_parameters_is_an_invalid_test() {
-		boolean actual = commandValidator.validate("deposit");
+	void create_with_missing_parameters_is_invalid() {
+		boolean actual = commandValidator.validate("create");
 		assertFalse(actual);
 	}
 
 	@Test
-	void missing_create_parameter_invalid_test() {
+	void missing_create_parameter_is_invalid() {
 		boolean actual = commandValidator.validate("cd 12345678 2.5");
 		assertFalse(actual);
 	}
 
 	@Test
-	void missing_account_type_invalid_test() {
+	void create_with_missing_account_type_is_invalid() {
 		boolean actual = commandValidator.validate("create 12345678 2.5");
 		assertFalse(actual);
 	}
 
 	@Test
-	void missing_apr_for_account_type_that_requires_it_is_invalid() {
+	void create_with_missing_apr_is_invalid() {
 		boolean actual = commandValidator.validate("create checking 12345678");
 		assertFalse(actual);
 	}
 
 	@Test
-	void invalid_account_type_is_invalid() {
+	void create_with_invalid_account_type_is_invalid() {
 		boolean actual = commandValidator.validate("create unknown 12345678 2.5");
 		assertFalse(actual);
 	}
+
+	@Test
+	void account_type_is_case_insensitive_for_create() {
+		boolean actual = commandValidator.validate("create SaVinGs 12345678 2.5");
+		assertTrue(actual);
+	}
+
 }

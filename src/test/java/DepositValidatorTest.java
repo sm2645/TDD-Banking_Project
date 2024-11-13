@@ -22,92 +22,84 @@ class DepositValidatorTest {
 	}
 
 	@Test
-	void invalidate_commands_missing_id_parameters() {
+	void deposit_with_missing_parameters_is_invalid() {
+		boolean actual = commandValidator.validate("deposit");
+		assertFalse(actual);
+	}
+
+	@Test
+	void deposit_with_missing_id_parameters_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 12345678"));
 	}
 
 	@Test
-	void invalidate_command_with_too_many_parameters() {
+	void deposit_with_too_many_parameters_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 12345678 3.5 100"));
 	}
 
 	@Test
-	void invalidate_deposit_to_cd_account() {
+	void deposit_to_cd_account_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 18345679 500"));
 	}
 
 	@Test
-	void invalidate_deposits_exceeding_deposit_limit_for_savings() {
+	void deposit_exceeding_savings_limit_of_2500_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 97654321 3000"));
 	}
 
 	@Test
-	void invalidate_deposit_exceeding_limit_for_checking() {
+	void max_of_deposit_of_2500_is_valid() {
+		assertTrue(commandValidator.validate("deposit 97654321 2500"));
+	}
+
+	@Test
+	void deposit_less_than_savings_limit_of_2500_is_valid() {
+		assertTrue(commandValidator.validate("deposit 97654321 2499"));
+	}
+
+	@Test
+	void negative_deposit_to_savings_is_invalid() {
+		assertFalse(commandValidator.validate("deposit 97654321 -100"));
+	}
+
+	@Test
+	void deposit_exceeding_checking_limit_of_1000_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 13345678 2000"));
 	}
 
 	@Test
-	void invalidate_negative_deposit_to_checking() {
+	void depositing_checking_max_of_1000_is_valid() {
+		assertTrue(commandValidator.validate("deposit 13345678 1000"));
+	}
+
+	@Test
+	void deposit_less_than_checking_accounts_limit_of_1000_is_valid() {
+		assertTrue(commandValidator.validate("deposit 97654321 999"));
+	}
+
+	@Test
+	void zero_deposit_is_valid() {
+		assertTrue(commandValidator.validate("deposit 97654321 0"));
+	}
+
+	@Test
+	void negative_deposit_to_checking_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 13345678 -100"));
 	}
 
 	@Test
-	void invalidate_invalid_account_id() {
+	void invalid_account_id_is_invalid() {
 		assertFalse(commandValidator.validate("deposit invalidId 500"));
 	}
 
 	@Test
-	void invalidate_invalid_balance_format() {
-		assertFalse(commandValidator.validate("deposit 97654321 abc"));
-	}
-
-	@Test
-	void validate_correct_deposit_to_checking() {
-		assertTrue(commandValidator.validate("deposit 13345678 500"));
-	}
-
-	@Test
-	void validate_proper_deposit_to_savings() {
-		assertTrue(commandValidator.validate("deposit 97654321 1000"));
-	}
-
-	@Test
-	void attempt_to_deposit_into_cd_invalid_test() {
-		assertFalse(commandValidator.validate("deposit 18345679 500"));
-	}
-
-	@Test
-	void exceeds_savings_deposit_limit_invalid_test() {
-		assertFalse(commandValidator.validate("deposit 97654321 3000"));
-	}
-
-	@Test
-	void exceeds_checking_deposit_limit_invalid_test() {
-		assertFalse(commandValidator.validate("deposit 13345678 2000"));
-	}
-
-	@Test
-	void invalid_account_id_invalid_test() {
-		assertFalse(commandValidator.validate("deposit 8765432 500"));
-	}
-
-	@Test
-	void non_number_parameters_invalid_test() {
+	void invalid_balance_format_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 97654321 mclwest"));
 	}
 
 	@Test
-	void valid_deposit_checking_valid_test() {
-		assertTrue(commandValidator.validate("deposit 13345678 500"));
+	void incorrect_account_id_for_deposit_is_invalid() {
+		assertFalse(commandValidator.validate("deposit 8765432 500"));
 	}
 
-	@Test
-	void valid_deposit_savings_valid_test() {
-		assertTrue(commandValidator.validate("deposit 97654321 200"));
-	}
-
-	@Test
-	void zero_deposit_valid_test() {
-		assertTrue(commandValidator.validate("deposit 97654321 0"));
-	}
 }

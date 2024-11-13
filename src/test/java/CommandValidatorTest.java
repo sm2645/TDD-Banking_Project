@@ -29,54 +29,10 @@ public class CommandValidatorTest {
 		assertTrue(actual);
 	}
 
-//Apr tests
-	@Test
-	void checking_apr_as_text_invalid_test() {
-		boolean actual = commandValidator.validate("create checking 12345678 wowweee");
-		assertFalse(actual);
-	}
-
-	@Test
-	void checking_negative_apr_invalid_test() {
-		boolean actual = commandValidator.validate("create checking 12345678 -1");
-		assertFalse(actual);
-	}
-
-	@Test
-	void checking_too_high_apr_invalid_test() {
-		boolean actual = commandValidator.validate("create checking 12345678 11");
-		assertFalse(actual);
-	}
-
-	@Test
-	void checking_zero_apr_valid_test() {
-		boolean actual = commandValidator.validate("create checking 12345678 0");
-		assertTrue(actual);
-	}
-
-	@Test
-	void checking_normal_apr_valid_test() {
-		boolean actual = commandValidator.validate("create checking 12345678 7");
-		assertTrue(actual);
-	}
-
-	@Test
-	void max_apr_valid_test() {
-		boolean actual = commandValidator.validate("create checking 12345678 10");
-		assertTrue(actual);
-	}
-
 //ID tests
 	@Test
 	void no_id_provided_invalid_test() {
 		boolean actual = commandValidator.validate("create cd 7 1100");
-		assertFalse(actual);
-	}
-
-	@Test
-	void duplicate_id_is_invalid() {
-		bank.addAccount("12345678", new Savings("12345678", 0.5));
-		boolean actual = commandValidator.validate("create savings 12345678 0.5");
 		assertFalse(actual);
 	}
 
@@ -106,125 +62,82 @@ public class CommandValidatorTest {
 	// Balance for CD
 
 	@Test
-	void cd_balance_below_minimum_invalid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5 999");
-		assertFalse(actual);
-	}
-
-	@Test
-	void cd_balance_above_maximum_invalid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5 10001");
-		assertFalse(actual);
-	}
-
-	@Test
-	void cd_negative_balance_invalid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5 -1000");
-		assertFalse(actual);
-	}
-
-	@Test
-	void cd_balance_not_specified_invalid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5");
-		assertFalse(actual);
-	}
-
-	@Test
-	void cd_balance_as_text_invalid_test() {
+	void create_cd_balance_as_text_is_invalid() {
 		boolean actual = commandValidator.validate("create cd 12345678 2.5 cewe");
 		assertFalse(actual);
 	}
 
 	@Test
-	void cd_balance_minimum_valid_test() {
-		boolean actual = commandValidator.validate("create cd 12345678 2.5 1000");
-		assertTrue(actual);
+	void create_cd_balance_as_negative_is_invalid() {
+		boolean actual = commandValidator.validate("create cd 12345678 2.5 -100");
+		assertFalse(actual);
 	}
 
 	@Test
-	void cd_balance_within_normal_range_valid_test() {
+	void create_cd_balance_within_normal_range_is_valid() {
 		boolean actual = commandValidator.validate("create cd 12345678 2.5 5000");
 		assertTrue(actual);
 	}
 
+//bal deposit
 	@Test
-	void savings_balance_specified_valid_test() {
-		boolean actual = commandValidator.validate("create savings 87654321 0.5 300");
+	void invalid_deposit_amount_as_text_is_invalid() {
+		boolean actual = commandValidator.validate("deposit 13345678 abc");
 		assertFalse(actual);
 	}
 
 	@Test
-	void test_checking_balance_specified_valid_test() {
-		boolean actual = commandValidator.validate("create checking 12345678 0.5 500");
-		assertFalse(actual);
-	}
-
-//deposit
-	@Test
-	void attempt_to_deposit_into_cd_invalid_test() {
-		boolean actual = commandValidator.validate("deposit 18345679 500");
+	void deposit_amount_as_negative_is_invalid() {
+		boolean actual = commandValidator.validate("deposit 13345678 -100");
 		assertFalse(actual);
 	}
 
 	@Test
-	void exceeds_savings_deposit_limit_invalid_test() {
-		boolean actual = commandValidator.validate("deposit 97654321 3000");
+	void deposit_amount_within_normal_range_is_valid() {
+		boolean actual = commandValidator.validate("deposit 13345678 200");
+		assertTrue(actual);
+
+	}
+
+	@Test
+	void valid_create_command() {
+		boolean actual = commandValidator.validate("create savings 12345676 0.5");
+		assertTrue(actual);
+	}
+
+	@Test
+	void invalid_create_command_missing_balance() {
+		boolean actual = commandValidator.validate("create savings 12345676");
 		assertFalse(actual);
 	}
 
 	@Test
-	void exceeds_checking_deposit_limit_invalid_test() {
-		boolean actual = commandValidator.validate("deposit 13345678 1500");
-		assertFalse(actual);
-	}
-
-	@Test
-	void invalid_account_id_invalid_test() {
-		boolean actual = commandValidator.validate("deposit 8765432 500");
-		assertFalse(actual);
-	}
-
-	@Test
-	void non_number_parameters_invalid_test() {
-		boolean actual = commandValidator.validate("deposit 13345678 mclwest");
-		assertFalse(actual);
-	}
-
-	@Test
-	void valid_deposit_checking_valid_test() {
+	void valid_deposit_command() {
 		boolean actual = commandValidator.validate("deposit 13345678 500");
 		assertTrue(actual);
 	}
 
 	@Test
-	void valid_deposit_savings_valid_test() {
-		boolean actual = commandValidator.validate("deposit 97654321 200");
-		assertTrue(actual);
+	void invalid_deposit_command_missing_amount() {
+		boolean actual = commandValidator.validate("deposit 13345678");
+		assertFalse(actual);
 	}
 
 	@Test
-	void zero_deposit_valid_test() {
-		boolean actual = commandValidator.validate("deposit 13345678 0");
+	void invalid_command_with_unknown_function() {
+		boolean actual = commandValidator.validate("unknown 12345678 500");
+		assertFalse(actual);
+	}
+
+	@Test
+	void valid_command_with_case_insensitive_account_type() {
+		boolean actual = commandValidator.validate("create SaVinGs 12345678 0.5");
 		assertTrue(actual);
 	}
-//Missing parameters
-	// Missing Apr and ID is above in its respective sections
 
 	@Test
 	void missing_parameters_invalid_test() {
 		boolean actual = commandValidator.validate("deposit");
-		assertFalse(actual);
-	}
-
-	@Test
-	void missing_create_parameter_invalid_test() {
-		boolean actual = commandValidator.validate("cd 12345678 2.5");
-		assertFalse(actual);
-	}
-
-	@Test
-	void missing_account_type_invalid_test() {
-		boolean actual = commandValidator.validate("create 12345678 2.5");
 		assertFalse(actual);
 	}
 
