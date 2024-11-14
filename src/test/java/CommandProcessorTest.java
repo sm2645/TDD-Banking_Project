@@ -14,18 +14,22 @@ public class CommandProcessorTest {
 	}
 
 	@Test
-	public void testCreateCommand() {
+	public void command_processor_properly_processes_create_commands() {
 		commandProcessor.process("create checking 12345678 1.0");
-		Accounts account = bank.retrieveAccount("12345678");
-		assertEquals(1.0, account.getAPR());
+		assertEquals(1.0, bank.retrieveAccount("12345678").getAPR());
 	}
 
 	@Test
-	public void testDepositCommand() {
+	public void command_processor_properly_processes_create_cd_commands_with_5_parameters() {
+		commandProcessor.process("create cd 12345678 1.0 1000");
+		assertEquals(1000, bank.retrieveAccount("12345678").getBalance());
+	}
+
+	@Test
+	public void command_processor_properly_processes_deposit_commands() {
 		commandProcessor.process("create checking 12345678 1.0");
 
 		commandProcessor.process("deposit 12345678 100");
-		Accounts account = bank.retrieveAccount("12345678");
-		assertEquals(100.0, account.getBalance());
+		assertEquals(100.0, bank.retrieveAccount("12345678").getBalance());
 	}
 }
