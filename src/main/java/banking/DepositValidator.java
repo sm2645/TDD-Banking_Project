@@ -27,12 +27,16 @@ public class DepositValidator {
 			return false;
 		}
 
-		return switch (accountType) {
-		case "Certificate of Deposit" -> validateCD();
-		case "banking.Savings" -> validateSavings(amount);
-		case "banking.Checking" -> validateChecking(amount);
-		default -> false;
-		};
+		switch (accountType) {
+		case "Certificate of Deposit":
+			return validateCD();
+		case "banking.Savings":
+			return validateSavings(amount);
+		case "banking.Checking":
+			return validateChecking(amount);
+		default:
+			return false;
+		}
 	}
 
 	private boolean validateCD() {

@@ -18,11 +18,14 @@ public class CommandValidator {
 
 		String functionPurpose = commandSeparated[0];
 
-		return switch (functionPurpose) {
-		case "create" -> createValidator.validate(commandSeparated);
-		case "deposit" -> depositValidator.validate(commandSeparated);
-		default -> false;
-		};
+		switch (functionPurpose) {
+		case "create":
+			return createValidator.validate(commandSeparated);
+		case "deposit":
+			return depositValidator.validate(commandSeparated);
+		default:
+			return false;
+		}
 	}
 
 	public boolean isValidAccountId(String id) {
