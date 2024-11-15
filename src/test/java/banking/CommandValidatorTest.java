@@ -1,3 +1,5 @@
+package banking;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -59,7 +61,7 @@ public class CommandValidatorTest {
 		boolean actual = commandValidator.validate("create cd 12345678 7 1100");
 		assertTrue(actual);
 	}
-	// Balance for CD
+	// Balance for banking.CD
 
 	@Test
 	void create_cd_balance_as_text_is_invalid() {

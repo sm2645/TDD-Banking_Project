@@ -1,3 +1,5 @@
+package banking;
+
 public class DepositValidator {
 
 	private final Bank bank;
@@ -27,8 +29,8 @@ public class DepositValidator {
 
 		return switch (accountType) {
 		case "Certificate of Deposit" -> validateCD();
-		case "Savings" -> validateSavings(amount);
-		case "Checking" -> validateChecking(amount);
+		case "banking.Savings" -> validateSavings(amount);
+		case "banking.Checking" -> validateChecking(amount);
 		default -> false;
 		};
 	}
