@@ -29,6 +29,11 @@ class DepositValidatorTest {
 
 	@Test
 	void deposit_with_missing_id_parameters_is_invalid() {
+		assertFalse(commandValidator.validate("deposit 1000"));
+	}
+
+	@Test
+	void deposit_with_missing_balance_parameters_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 12345678"));
 	}
 
@@ -88,12 +93,12 @@ class DepositValidatorTest {
 	}
 
 	@Test
-	void invalid_account_id_is_invalid() {
+	void invalid_account_id_as_text_is_invalid() {
 		assertFalse(commandValidator.validate("deposit invalidId 500"));
 	}
 
 	@Test
-	void invalid_balance_format_is_invalid() {
+	void invalid_balance_format_as_text_is_invalid() {
 		assertFalse(commandValidator.validate("deposit 97654321 mclwest"));
 	}
 

@@ -106,7 +106,7 @@ public class CommandValidatorTest {
 	}
 
 	@Test
-	void invalid_create_command_missing_balance() {
+	void invalid_create_command_missing_apr() {
 		boolean actual = commandValidator.validate("create savings 12345676");
 		assertFalse(actual);
 	}
@@ -138,6 +138,12 @@ public class CommandValidatorTest {
 	@Test
 	void missing_parameters_invalid_test() {
 		boolean actual = commandValidator.validate("deposit");
+		assertFalse(actual);
+	}
+
+	@Test
+	void missing_action_invalid_test() {
+		boolean actual = commandValidator.validate("12345678 500");
 		assertFalse(actual);
 	}
 
