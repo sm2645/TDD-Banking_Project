@@ -14,12 +14,17 @@ public class CreateCommandProcessor {
 		double apr = Double.parseDouble(commandSeparated[3]);
 
 		switch (accountType) {
-		case "checking" -> bank.addAccount(accountId, new Checking(accountId, apr));
-		case "savings" -> bank.addAccount(accountId, new Savings(accountId, apr));
-		case "cd" -> {
+		case "checking":
+			bank.addAccount(accountId, new Checking(accountId, apr));
+			break;
+		case "savings":
+			bank.addAccount(accountId, new Savings(accountId, apr));
+			break;
+		case "cd":
 			double balance = Double.parseDouble(commandSeparated[4]);
 			bank.addAccount(accountId, new CD(accountId, apr, balance));
+			break;
 		}
-		}
+
 	}
 }
