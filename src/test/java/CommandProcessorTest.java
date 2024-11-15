@@ -31,5 +31,5 @@ public class CommandProcessorTest {
 
 		commandProcessor.process("deposit 12345678 100");
 		assertEquals(100.0, bank.retrieveAccount("12345678").getBalance());
-	}
+	}//
 }
