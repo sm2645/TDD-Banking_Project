@@ -61,6 +61,26 @@ public class CommandValidatorTest {
 		boolean actual = commandValidator.validate("create cd 12345678 7 1100");
 		assertTrue(actual);
 	}
+
+	@Test
+	void invalid_id_with_dash_character_value_less_than_zero() {
+
+		boolean actual = commandValidator.validate("create cd 12-345678 7 1100");
+		assertFalse(actual);
+	}
+
+	@Test
+	void invalid_id_with_dash_character_ascii_value_less_than_zero() {
+		boolean actual = commandValidator.validate("create cd 12/345678 7 1100");
+		assertFalse(actual);
+	}
+
+	@Test
+	void invalid_id_with_slash_character_value_one_ascii_value_less_than_zero() {
+		boolean actual = commandValidator.validate("create cd /2345678 7 1100");
+		assertFalse(actual);
+	}
+
 	// Balance for banking.CD
 
 	@Test
