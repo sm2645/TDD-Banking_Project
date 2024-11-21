@@ -3,11 +3,9 @@ package banking;
 public class DepositValidator {
 
 	private final Bank bank;
-	private final CommandValidator commandValidator;
 
-	public DepositValidator(Bank bank, CommandValidator commandValidator) {
+	public DepositValidator(Bank bank) {
 		this.bank = bank;
-		this.commandValidator = commandValidator;
 	}
 
 	public boolean validate(String[] commandSeparated) {
