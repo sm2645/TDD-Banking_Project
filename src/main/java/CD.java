@@ -3,4 +3,9 @@ public class CD extends Accounts {
 		super(ID, APR, balance);
 	}
 
+	@Override
+	public String getAccountType() {
+		return "CD";
+	}
+
 }

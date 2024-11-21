@@ -27,4 +27,9 @@ public class Bank {
 	public void withdrawFromAccount(String accountId, double withdrawAmount) {
 		accounts.get(accountId).withdraw(withdrawAmount);
 	}
+
+	public boolean ifAccountExists(String accountId) {
+		Accounts account = accounts.get(accountId);
+		return account != null;
+	}
 }
