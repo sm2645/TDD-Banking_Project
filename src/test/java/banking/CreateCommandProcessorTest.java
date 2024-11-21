@@ -1,3 +1,5 @@
+package banking;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,7 +30,7 @@ class CreateCommandProcessorTest {
 	@Test
 	public void create_checking_command_actually_creates_a_checking_type_account() {
 		commandProcessor.process("create checking 01234567 1");
-		assertEquals("Checking", bank.retrieveAccount("01234567").getAccountType());
+		assertEquals("banking.Checking", bank.retrieveAccount("01234567").getAccountType());
 
 	}
 
@@ -61,7 +63,7 @@ class CreateCommandProcessorTest {
 	@Test
 	public void create_savings_command_actually_creates_a_savings_type_account() {
 		commandProcessor.process("create savings 01234567 1");
-		assertEquals("Savings", bank.retrieveAccount("01234567").getAccountType());
+		assertEquals("banking.Savings", bank.retrieveAccount("01234567").getAccountType());
 
 	}
 
@@ -94,7 +96,7 @@ class CreateCommandProcessorTest {
 	@Test
 	public void create_cd_command_actually_creates_a_cd_type_account() {
 		commandProcessor.process("create cd 01234567 1 1000");
-		assertEquals("CD", bank.retrieveAccount("01234567").getAccountType());
+		assertEquals("banking.CD", bank.retrieveAccount("01234567").getAccountType());
 
 	}
 

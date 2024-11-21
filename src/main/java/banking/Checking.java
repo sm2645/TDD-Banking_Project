@@ -1,3 +1,5 @@
+package banking;
+
 public class Checking extends Accounts {
 
 	public Checking(String ID, double APR) {
@@ -6,7 +8,7 @@ public class Checking extends Accounts {
 
 	@Override
 	public String getAccountType() {
-		return "Checking"; // Return specific account type
+		return "banking.Checking"; // Return specific account type
 	}
 
 }

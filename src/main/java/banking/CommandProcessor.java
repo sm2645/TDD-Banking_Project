@@ -1,3 +1,5 @@
+package banking;
+
 public class CommandProcessor {
 	private final CreateCommandProcessor createProcessor;
 	private final DepositCommandProcessor depositProcessor;
@@ -13,8 +15,12 @@ public class CommandProcessor {
 		String functionPurpose = commandSeparated[0];
 
 		switch (functionPurpose) {
-		case "create" -> createProcessor.process(commandSeparated);
-		case "deposit" -> depositProcessor.process(commandSeparated);
+		case "create":
+			createProcessor.process(commandSeparated);
+			break;
+		case "deposit":
+			depositProcessor.process(commandSeparated);
+			break;
 		}
 	}
 }

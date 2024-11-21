@@ -1,9 +1,11 @@
-public class DepositValidator {
+package banking;
+
+public class WithdrawValidator {
 
 	private final Bank bank;
 	private final CommandValidator commandValidator;
 
-	public DepositValidator(Bank bank, CommandValidator commandValidator) {
+	public WithdrawValidator(Bank bank, CommandValidator commandValidator) {
 		this.bank = bank;
 		this.commandValidator = commandValidator;
 	}
@@ -25,12 +27,16 @@ public class DepositValidator {
 			return false;
 		}
 
-		return switch (accountType) {
-		case "Certificate of Deposit" -> validateCD();
-		case "Savings" -> validateSavings(amount);
-		case "Checking" -> validateChecking(amount);
-		default -> false;
-		};
+		switch (accountType) {
+		case "Certificate of Deposit":
+			return validateCD();
+		case "banking.Savings":
+			return validateSavings(amount);
+		case "banking.Checking":
+			return validateChecking(amount);
+		default:
+			return false;
+		}
 	}
 
 	private boolean validateCD() {
@@ -44,4 +50,5 @@ public class DepositValidator {
 	private boolean validateChecking(String amount) {
 		return Double.parseDouble(amount) <= 1000;
 	}
+
 }

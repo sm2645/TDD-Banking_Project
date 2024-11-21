@@ -1,3 +1,5 @@
+package banking;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +20,7 @@ public class DepositCommandProcessorTest {
 		commandProcessor = new CommandProcessor(bank);
 	}
 
-//Checking
+//banking.Checking
 	@Test
 	public void depositing_zero_works_for_checking_account() {
 		bank.addAccount(ACCOUNT_ID, new Checking(ACCOUNT_ID, APR));
@@ -53,7 +55,7 @@ public class DepositCommandProcessorTest {
 		assertEquals(3 * DEPOSIT, bank.retrieveAccount("01234567").getBalance());
 	}
 
-//Savings
+//banking.Savings
 	@Test
 	public void depositing_zero_works_for_savings_account() {
 		bank.addAccount(ACCOUNT_ID, new Savings(ACCOUNT_ID, APR));

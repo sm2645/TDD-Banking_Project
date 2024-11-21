@@ -1,3 +1,5 @@
+package banking;
+
 public class Savings extends Accounts {
 
 	public Savings(String ID, double APR) {
@@ -6,7 +8,7 @@ public class Savings extends Accounts {
 
 	@Override
 	public String getAccountType() {
-		return "Savings";
+		return "banking.Savings";
 	}
 
 }

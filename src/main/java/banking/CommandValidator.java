@@ -1,7 +1,10 @@
+package banking;
+
 public class CommandValidator {
 	// add withdraw TO DO
 	private final CreateValidator createValidator;
 	private final DepositValidator depositValidator;
+	private final WithdrawValidator withdrawValidator;
 
 	public CommandValidator(Bank bank, CreateValidator createValidator, DepositValidator depositValidator) {
 		this.createValidator = createValidator;
@@ -17,11 +20,16 @@ public class CommandValidator {
 
 		String functionPurpose = commandSeparated[0];
 
-		return switch (functionPurpose) {
-		case "create" -> createValidator.validate(commandSeparated);
-		case "deposit" -> depositValidator.validate(commandSeparated);
-		default -> false;
-		};
+		switch (functionPurpose) {
+		case "create":
+			return createValidator.validate(commandSeparated);
+		case "deposit":
+			return depositValidator.validate(commandSeparated);
+		case "withdraw":
+			return withdrawValidator.validate(commandSeparated);
+		default:
+			return false;
+		}
 	}
 
 	public boolean isValidAccountId(String id) {
