@@ -4,7 +4,7 @@ public class CommandValidator {
 	// add withdraw TO DO
 	private final CreateValidator createValidator;
 	private final DepositValidator depositValidator;
-	private final WithdrawValidator withdrawValidator;
+//	private final WithdrawValidator withdrawValidator;
 
 	public CommandValidator(Bank bank, CreateValidator createValidator, DepositValidator depositValidator) {
 		this.createValidator = createValidator;
@@ -25,8 +25,8 @@ public class CommandValidator {
 			return createValidator.validate(commandSeparated);
 		case "deposit":
 			return depositValidator.validate(commandSeparated);
-		case "withdraw":
-			return withdrawValidator.validate(commandSeparated);
+//		case "withdraw":
+//			return withdrawValidator.validate(commandSeparated);
 		default:
 			return false;
 		}
