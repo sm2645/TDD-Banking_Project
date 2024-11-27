@@ -6,9 +6,9 @@ public class CommandValidator {
 	private final DepositValidator depositValidator;
 //	private final WithdrawValidator withdrawValidator;
 
-	public CommandValidator(Bank bank) {
-		this.createValidator = new CreateValidator(bank);
-		this.depositValidator = new DepositValidator(bank);
+	public CommandValidator(Bank bank, CreateValidator createValidator, DepositValidator depositValidator) {
+		this.createValidator = createValidator;
+		this.depositValidator = depositValidator;
 	}
 
 	public boolean validate(String command) {

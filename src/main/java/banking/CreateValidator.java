@@ -8,6 +8,7 @@ public class CreateValidator {
 
 	public CreateValidator(Bank bank, CommandValidator commandValidator) {
 		this.bank = bank;
+		this.commandValidator = commandValidator;
 	}
 
 	public boolean validate(String[] commandSeparated) {
