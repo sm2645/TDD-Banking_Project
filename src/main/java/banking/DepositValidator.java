@@ -3,11 +3,10 @@ package banking;
 public class DepositValidator {
 
 	private final Bank bank;
-	private final CommandValidator commandValidator;
 
-	public DepositValidator(Bank bank, CommandValidator commandValidator) {
+	public DepositValidator(Bank bank) {
 		this.bank = bank;
-		this.commandValidator = commandValidator;
+
 	}
 
 	public boolean validate(String[] commandSeparated) {
@@ -23,7 +22,7 @@ public class DepositValidator {
 		}
 		String accountType = account.getAccountType();
 
-		if (!commandValidator.isValidAccountId(accountId) || !commandValidator.isValidBalance(amount)) {
+		if (!isValidAccountId(accountId) || !isValidBalance(amount)) {
 			return false;
 		}
 
@@ -49,5 +48,29 @@ public class DepositValidator {
 
 	private boolean validateChecking(String amount) {
 		return Double.parseDouble(amount) <= 1000;
+	}
+
+	public boolean isValidAccountId(String id) {
+		if (id.length() != 8) {
+			return false;
+		}
+
+		for (int i = 0; i < id.length(); i++) {
+			char num = id.charAt(i);
+			if (num < '0' || num > '9') {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isValidBalance(String balance) {
+		try {
+			double balanceInteger = Double.parseDouble(balance);
+			return balanceInteger >= 0;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
 	}
 }

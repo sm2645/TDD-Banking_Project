@@ -16,11 +16,8 @@ public class MasterControlTest {
 	void setUp() {
 		input = new ArrayList<>();
 		Bank bank = new Bank();
-		CommandValidator commandValidator = new CommandValidator(bank, null, null);
-		CreateValidator createValidator = new CreateValidator(bank, commandValidator);
-		DepositValidator depositValidator = new DepositValidator(bank, commandValidator);
-		masterControl = new MasterControl(new CommandValidator(bank, createValidator, depositValidator),
-				new CommandProcessor(bank), new CommandStorage());
+
+		masterControl = new MasterControl(new CommandValidator(bank), new CommandProcessor(bank), new CommandStorage());
 	}
 
 	@Test

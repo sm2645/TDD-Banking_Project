@@ -8,15 +8,12 @@ import org.junit.jupiter.api.Test;
 
 public class CreateValidatorTest {
 	CommandValidator commandValidator;
-	CreateValidator createValidator;
 	Bank bank;
 
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
-		commandValidator = new CommandValidator(bank, null, null);
-		createValidator = new CreateValidator(bank, commandValidator);
-		commandValidator = new CommandValidator(bank, createValidator, null);
+		commandValidator = new CommandValidator(bank);
 	}
 
 	@Test

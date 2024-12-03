@@ -9,15 +9,12 @@ import org.junit.jupiter.api.Test;
 class DepositValidatorTest {
 
 	CommandValidator commandValidator;
-	DepositValidator depositValidator;
 	Bank bank;
 
 	@BeforeEach
 	void setUp() {
 		bank = new Bank();
-		commandValidator = new CommandValidator(bank, null, null);
-		depositValidator = new DepositValidator(bank, commandValidator);
-		commandValidator = new CommandValidator(bank, null, depositValidator);
+		commandValidator = new CommandValidator(bank);
 		bank.addAccount("13345678", new Checking("13345678", 0.01));
 		bank.addAccount("97654321", new Savings("97654321", 0.01));
 		bank.addAccount("18345679", new CD("18345679", 2.5, 1000));
