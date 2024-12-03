@@ -1,54 +1,77 @@
 package banking;
 
 public class WithdrawValidator {
-
 	private final Bank bank;
-	private final CommandValidator commandValidator;
 
-	public WithdrawValidator(Bank bank, CommandValidator commandValidator) {
+	public WithdrawValidator(Bank bank) {
 		this.bank = bank;
-		this.commandValidator = commandValidator;
 	}
 
-	public boolean validate(String[] commandSeparated) {
-		if (commandSeparated.length != 3) {
+	public boolean validate(String[] command) {
+		if (command.length != 3) {
 			return false;
 		}
 
-		String accountId = commandSeparated[1];
-		String amount = commandSeparated[2];
+		String accountId = command[1];
+		String amountStr = command[2];
+
+		if (!isValidAccountId(accountId) || !isValidAmount(amountStr)) {
+			return false;
+		}
+		double amount = Double.parseDouble(amountStr);
+
 		Accounts account = bank.retrieveAccount(accountId);
 		if (account == null) {
 			return false;
 		}
+
 		String accountType = account.getAccountType();
-
-		if (!commandValidator.isValidAccountId(accountId) || !commandValidator.isValidBalance(amount)) {
-			return false;
-		}
-
 		switch (accountType) {
-		case "Certificate of Deposit":
-			return validateCD();
 		case "banking.Savings":
-			return validateSavings(amount);
+			return validateWithdrawalFromSavings((Savings) account, amount);
 		case "banking.Checking":
-			return validateChecking(amount);
+			return validateWithdrawalFromChecking(amount);
+		case "Certificate of Deposit":
+			return validateWithdrawalFromCD(account, amount);
 		default:
 			return false;
 		}
 	}
 
-	private boolean validateCD() {
-		return false;
+	private boolean validateWithdrawalFromSavings(Savings account, double amount) {
+		return amount <= 1000 && !account.hasWithdrawnThisMonth();
 	}
 
-	private boolean validateSavings(String amount) {
-		return Double.parseDouble(amount) <= 2500;
+	private boolean validateWithdrawalFromChecking(double amount) {
+		return amount <= 400;
 	}
 
-	private boolean validateChecking(String amount) {
-		return Double.parseDouble(amount) <= 1000;
+	private boolean validateWithdrawalFromCD(Accounts account, double amount) {
+		if (account.getAccountAge() < 12) {
+			return false;
+		}
+		return amount >= account.getBalance();
 	}
 
+	public boolean isValidAccountId(String id) {
+		if (id.length() != 8) {
+			return false;
+		}
+
+		for (char c : id.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean isValidAmount(String amountStr) {
+		try {
+			double amount = Double.parseDouble(amountStr);
+			return amount >= 0;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
 }
