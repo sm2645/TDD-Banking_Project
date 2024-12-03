@@ -30,6 +30,10 @@ public class Bank {
 		accounts.get(accountId).withdraw(withdrawAmount);
 	}
 
+	public void incrementAnAccountsAge(String accountId, int ageByAmount) {
+		accounts.get(accountId).incrementAccountAge(ageByAmount);
+	}
+
 	public boolean ifAccountExists(String accountId) {
 		Accounts account = accounts.get(accountId);
 		return account != null;

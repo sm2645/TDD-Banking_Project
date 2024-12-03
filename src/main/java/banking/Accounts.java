@@ -4,11 +4,13 @@ public abstract class Accounts {
 	private final double APR;
 	private final String ID;
 	private double balance;
+	private int accountAge;
 
 	public Accounts(String ID, double APR, double balance) {
 		this.balance = balance;
 		this.APR = APR;
 		this.ID = ID;
+		this.accountAge = 0;
 
 	}
 
@@ -39,5 +41,14 @@ public abstract class Accounts {
 
 	}
 
+	public int getAccountAge() {
+		return accountAge;
+	}
+
+	public void incrementAccountAge(int months) {
+		accountAge += months;
+	}
+
 	public abstract String getAccountType();
+
 }
