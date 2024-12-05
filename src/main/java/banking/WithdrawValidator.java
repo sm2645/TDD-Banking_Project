@@ -7,6 +7,7 @@ public class WithdrawValidator {
 		this.bank = bank;
 	}
 
+//
 	public boolean validate(String[] command) {
 		if (command.length != 3) {
 			return false;
