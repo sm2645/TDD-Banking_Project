@@ -106,4 +106,8 @@ class DepositValidatorTest {
 		assertFalse(commandValidator.validate("deposit 8765432 500"));
 	}
 
+	@Test
+	void negative_account_id_for_deposit_is_invalid() {
+		assertFalse(commandValidator.validate("deposit -8765432 500"));
+	}
 }
