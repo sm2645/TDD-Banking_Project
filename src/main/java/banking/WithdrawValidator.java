@@ -32,7 +32,7 @@ public class WithdrawValidator {
 			return validateWithdrawalFromSavings((Savings) account, amount);
 		case "banking.Checking":
 			return validateWithdrawalFromChecking(amount);
-		case "Certificate of Deposit":
+		case "banking.CD":
 			return validateWithdrawalFromCD(account, amount);
 		default:
 			return false;
@@ -59,8 +59,9 @@ public class WithdrawValidator {
 			return false;
 		}
 
-		for (char c : id.toCharArray()) {
-			if (!Character.isDigit(c)) {
+		for (int i = 0; i < id.length(); i++) {
+			char num = id.charAt(i);
+			if (num < '0' || num > '9') {
 				return false;
 			}
 		}

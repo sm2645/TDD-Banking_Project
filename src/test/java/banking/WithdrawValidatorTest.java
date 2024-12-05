@@ -20,7 +20,7 @@ class WithdrawValidatorTest {
 		bank.addAccount("97654321", new Savings("97654321", 0.01));
 		bank.depositToAccount("97654321", 1000.0);
 		bank.addAccount("18345679", new CD("18345679", 2.5, 1000));
-		bank.incrementAnAccountsAge("18345679", 13);
+
 	}
 
 	@Test
@@ -46,7 +46,13 @@ class WithdrawValidatorTest {
 
 	@Test
 	void withdraw_to_new_cd_account_is_invalid() {
-		assertTrue(commandValidator.validate("withdraw 18345679 500"));
+		assertFalse(commandValidator.validate("withdraw 18345679 500"));
+	}
+
+	@Test
+	void withdraw_to_13m_old_cd_account_is_valid() {
+		bank.incrementAnAccountsAge("18345679", 12);
+		assertTrue(commandValidator.validate("withdraw 18345679 1000"));
 	}
 
 	@Test
