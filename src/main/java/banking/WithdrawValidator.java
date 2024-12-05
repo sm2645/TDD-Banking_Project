@@ -16,7 +16,7 @@ public class WithdrawValidator {
 		String accountId = command[1];
 		String amountStr = command[2];
 
-		if (!isValidAccountId(accountId) || !isValidAmount(amountStr)) {
+		if (!bank.isValidAccountId(accountId) || !bank.isValidAmount(amountStr)) {
 			return false;
 		}
 		double amount = Double.parseDouble(amountStr);
@@ -52,28 +52,5 @@ public class WithdrawValidator {
 			return false;
 		}
 		return amount >= account.getBalance();
-	}
-
-	public boolean isValidAccountId(String id) {
-		if (id.length() != 8) {
-			return false;
-		}
-
-		for (int i = 0; i < id.length(); i++) {
-			char num = id.charAt(i);
-			if (num < '0' || num > '9') {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private boolean isValidAmount(String amountStr) {
-		try {
-			double amount = Double.parseDouble(amountStr);
-			return amount >= 0;
-		} catch (NumberFormatException e) {
-			return false;
-		}
 	}
 }

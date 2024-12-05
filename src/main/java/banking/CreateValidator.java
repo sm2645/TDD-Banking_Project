@@ -31,13 +31,13 @@ public class CreateValidator {
 			balance = commandSeparated[4];
 		}
 		if (Objects.equals(accountType, "cd")) {
-			return isValidAccountId(accountId) && isValidApr(apr) && isValidBalance(balance)
+			return bank.isValidAccountId(accountId) && isValidApr(apr) && bank.isValidAmount(balance)
 					&& (Double.parseDouble(balance) >= 1000 && Double.parseDouble(balance) <= 10000);
 		} else {
 			if (commandSeparated.length != 4) {
 				return false;
 			}
-			return isValidAccountType(accountType) && isValidAccountId(accountId) && isValidApr(apr);
+			return isValidAccountType(accountType) && bank.isValidAccountId(accountId) && isValidApr(apr);
 		}
 
 	}
@@ -54,30 +54,6 @@ public class CreateValidator {
 		try {
 			double aprValue = Double.parseDouble(apr);
 			return aprValue >= 0 && aprValue <= 10;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-
-	}
-
-	public boolean isValidAccountId(String id) {
-		if (id.length() != 8) {
-			return false;
-		}
-
-		for (int i = 0; i < id.length(); i++) {
-			char num = id.charAt(i);
-			if (num < '0' || num > '9') {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean isValidBalance(String balance) {
-		try {
-			double balanceInteger = Double.parseDouble(balance);
-			return balanceInteger >= 0;
 		} catch (NumberFormatException e) {
 			return false;
 		}
