@@ -24,17 +24,17 @@ public class WithdrawValidator {
 		Accounts account = bank.retrieveAccount(accountId);
 		if (account == null) {
 			return false;
-		}
+		} else {
 
-		String accountType = account.getAccountType();
-		switch (accountType) {
-		case "banking.Savings":
-			return validateWithdrawalFromSavings((Savings) account, amount);
-		case "banking.Checking":
-			return validateWithdrawalFromChecking(amount);
-		case "banking.CD":
-			return validateWithdrawalFromCD(account, amount);
-		default:
+			String accountType = account.getAccountType();
+			switch (accountType) {
+			case "banking.Savings":
+				return validateWithdrawalFromSavings((Savings) account, amount);
+			case "banking.Checking":
+				return validateWithdrawalFromChecking(amount);
+			case "banking.CD":
+				return validateWithdrawalFromCD(account, amount);
+			}
 			return false;
 		}
 	}

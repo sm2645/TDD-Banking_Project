@@ -46,13 +46,31 @@ class WithdrawValidatorTest {
 
 	@Test
 	void withdraw_to_new_cd_account_is_invalid() {
-		assertFalse(commandValidator.validate("withdraw 18345679 500"));
+		assertFalse(commandValidator.validate("withdraw 18345679 1000"));
 	}
 
 	@Test
-	void withdraw_to_13m_old_cd_account_is_valid() {
+	void withdraw_from_13m_old_cd_account_is_valid() {
+		bank.incrementAnAccountsAge("18345679", 12);
+		assertTrue(commandValidator.validate("withdraw 18345679 1001"));
+	}
+
+	@Test
+	void withdraw_less_than_balance_to_13m_old_cd_account_is_valid() {
+		bank.incrementAnAccountsAge("18345679", 12);
+		assertFalse(commandValidator.validate("withdraw 18345679 100"));
+	}
+
+	@Test
+	void withdraw_balance_to_13m_old_cd_account_is_valid() {
 		bank.incrementAnAccountsAge("18345679", 12);
 		assertTrue(commandValidator.validate("withdraw 18345679 1000"));
+	}
+
+	@Test
+	void withdraw_more_than_balance_to_13m_old_cd_account_is_valid() {
+		bank.incrementAnAccountsAge("18345679", 12);
+		assertTrue(commandValidator.validate("withdraw 18345679 1100"));
 	}
 
 	@Test
@@ -68,6 +86,16 @@ class WithdrawValidatorTest {
 	@Test
 	void withdraw_less_than_savings_limit_of_1000_is_valid() {
 		assertTrue(commandValidator.validate("withdraw 97654321 999"));
+	}
+
+	@Test
+	void one_dollar_withdraw_to_savings_is_valid() {
+		assertTrue(commandValidator.validate("withdraw 97654321 1"));
+	}
+
+	@Test
+	void zero_withdraw_to_savings_is_valid() {
+		assertTrue(commandValidator.validate("withdraw 97654321 0"));
 	}
 
 	@Test
@@ -91,13 +119,18 @@ class WithdrawValidatorTest {
 	}
 
 	@Test
+	void one_dollar_withdraw_is_valid() {
+		assertTrue(commandValidator.validate("withdraw 97654321 1"));
+	}
+
+	@Test
 	void zero_withdraw_is_invalid() {
 		assertTrue(commandValidator.validate("withdraw 97654321 0"));
 	}
 
 	@Test
 	void negative_withdraw_to_checking_is_invalid() {
-		assertFalse(commandValidator.validate("withdraw 13345678 -100"));
+		assertFalse(commandValidator.validate("withdraw 13345678 -1"));
 	}
 
 	@Test
@@ -112,7 +145,7 @@ class WithdrawValidatorTest {
 
 	@Test
 	void incorrect_account_id_for_withdraw_is_invalid() {
-		assertFalse(commandValidator.validate("withdraw 8765432 500"));
+		assertFalse(commandValidator.validate("withdraw 67654321 500"));
 	}
 
 }
