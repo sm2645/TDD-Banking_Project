@@ -32,10 +32,9 @@ public class WithdrawValidator {
 				return validateWithdrawalFromSavings((Savings) account, amount);
 			case "banking.Checking":
 				return validateWithdrawalFromChecking(amount);
-			case "banking.CD":
+			default:
 				return validateWithdrawalFromCD(account, amount);
 			}
-			return false;
 		}
 	}
 

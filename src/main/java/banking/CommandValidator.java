@@ -5,11 +5,13 @@ public class CommandValidator {
 	private final CreateValidator createValidator;
 	private final DepositValidator depositValidator;
 	private final WithdrawValidator withdrawValidator;
+	private final TransferValidator transferValidator;
 
 	public CommandValidator(Bank bank) {
 		this.createValidator = new CreateValidator(bank);
 		this.depositValidator = new DepositValidator(bank);
 		this.withdrawValidator = new WithdrawValidator(bank);
+		this.transferValidator = new TransferValidator(bank);
 	}
 
 	public boolean validate(String command) {
@@ -28,6 +30,8 @@ public class CommandValidator {
 			return depositValidator.validate(commandSeparated);
 		case "withdraw":
 			return withdrawValidator.validate(commandSeparated);
+		case "transfer":
+			return transferValidator.validate(commandSeparated);
 		default:
 			return false;
 		}

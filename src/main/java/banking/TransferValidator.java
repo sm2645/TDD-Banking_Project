@@ -16,16 +16,15 @@ public class TransferValidator {
 		String receiverId = command[2];
 		String amountStr = command[3];
 
-		if (!isValidAccountId(senderId) || !isValidAccountId(receiverId) || !isValidAmount(amountStr)) {
+		if (!bank.isValidAccountId(senderId) || !bank.isValidAccountId(receiverId) || !bank.isValidAmount(amountStr)) {
 			return false;
 		}
 
 		Accounts senderAccount = bank.retrieveAccount(senderId);
 		Accounts receiverAccount = bank.retrieveAccount(receiverId);
 
-		if (senderAccount == null || receiverAccount == null
-				|| senderAccount.getAccountType().equals("Certificate of Deposit")
-				|| receiverAccount.getAccountType().equals("Certificate of Deposit")) {
+		if (senderAccount == null || receiverAccount == null || senderAccount.getAccountType().equals("banking.CD")
+				|| receiverAccount.getAccountType().equals("banking.CD")) {
 			return false;
 		}
 
@@ -52,25 +51,4 @@ public class TransferValidator {
 		return amount <= 400;
 	}
 
-	public boolean isValidAccountId(String id) {
-		if (id.length() != 8) {
-			return false;
-		}
-		for (char c : id.toCharArray()) {
-			if (!Character.isDigit(c)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private boolean isValidAmount(String amountStr) {
-		// Validate that the amount is a non-negative number
-		try {
-			double amount = Double.parseDouble(amountStr);
-			return amount >= 0;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
 }
