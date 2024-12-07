@@ -30,6 +30,10 @@ public class TransferValidator {
 
 		double amount = Double.parseDouble(amountStr);
 
+		if (amount > senderAccount.getBalance()) {
+			amount = senderAccount.getBalance();
+		}
+
 		String senderAccountType = senderAccount.getAccountType();
 		switch (senderAccountType) {
 		case "banking.Savings":

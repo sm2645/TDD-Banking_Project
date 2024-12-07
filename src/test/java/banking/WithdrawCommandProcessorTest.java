@@ -114,4 +114,13 @@ public class WithdrawCommandProcessorTest {
 		assertEquals((0), bank.retrieveAccount("01234567").getBalance());
 	}
 
+	@Test
+	public void withdraw_balance_for_13mo_old_cd_account() {
+		bank.addAccount(ACCOUNT_ID, new CD(ACCOUNT_ID, APR, DEPOSIT));
+		bank.incrementAnAccountsAge(ACCOUNT_ID, 13);
+
+		commandProcessor.process("withdraw 01234567 1000");
+		assertEquals(0, bank.retrieveAccount("01234567").getBalance());
+	}
+
 }
