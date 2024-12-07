@@ -35,10 +35,8 @@ public class TransferValidator {
 		case "banking.Savings":
 			Savings savingsAccount = (Savings) senderAccount;
 			return validateSavingsTransfer(savingsAccount, amount);
-		case "banking.Checking":
-			return validateCheckingTransfer(amount);
 		default:
-			return false;
+			return validateCheckingTransfer(amount);
 		}
 	}
 

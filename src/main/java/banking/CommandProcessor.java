@@ -21,6 +21,8 @@ public class CommandProcessor {
 		case "deposit":
 			depositProcessor.process(commandSeparated);
 			break;
+		default:
+			break;
 		}
 	}
 }

@@ -62,4 +62,10 @@ public class AccountsTest {
 		account.withdraw(999);
 		assertEquals(1.0, account.getBalance());
 	}
+
+	@Test
+	public void tests_withdrawal_one_more_than_balance() {
+		account.withdraw(1001);
+		assertEquals(0, account.getBalance());
+	}
 }

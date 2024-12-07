@@ -31,33 +31,19 @@ public class CreateValidator {
 			balance = commandSeparated[4];
 		}
 		if (Objects.equals(accountType, "cd")) {
-			return bank.isValidAccountId(accountId) && isValidApr(apr) && bank.isValidAmount(balance)
+			return bank.isValidAccountId(accountId) && bank.isValidApr(apr) && bank.isValidAmount(balance)
 					&& (Double.parseDouble(balance) >= 1000 && Double.parseDouble(balance) <= 10000);
 		} else {
 			if (commandSeparated.length != 4) {
 				return false;
 			}
-			return isValidAccountType(accountType) && bank.isValidAccountId(accountId) && isValidApr(apr);
+			return isValidAccountType(accountType) && bank.isValidAccountId(accountId) && bank.isValidApr(apr);
 		}
 
 	}
 
 	public boolean isValidAccountType(String type) {
 		return Objects.equals(type, "savings") || Objects.equals(type, "checking") || Objects.equals(type, "cd");
-	}
-
-	public boolean isValidApr(String apr) {
-		if (apr == null || apr.isEmpty()) {
-			return false;
-		}
-
-		try {
-			double aprValue = Double.parseDouble(apr);
-			return aprValue >= 0 && aprValue <= 10;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-
 	}
 
 }

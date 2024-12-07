@@ -6,7 +6,7 @@ public abstract class Accounts {
 	private double balance;
 	private int accountAge;
 
-	public Accounts(String ID, double APR, double balance) {
+	protected Accounts(String ID, double APR, double balance) {
 		this.balance = balance;
 		this.APR = APR;
 		this.ID = ID;

@@ -8,18 +8,13 @@ public class PassTimeValidator {
 
 		String monthsStr = command[1];
 
-		if (!isValidMonths(monthsStr)) {
-			return false;
-		}
-
-		int months = Integer.parseInt(monthsStr);
-		return months >= 1 && months <= 60;
+		return isValidMonths(monthsStr);
 	}
 
 	private boolean isValidMonths(String monthsStr) {
 		try {
 			int months = Integer.parseInt(monthsStr);
-			return months > 0;
+			return (months > 0) && (months <= 60);
 		} catch (NumberFormatException e) {
 			return false;
 		}

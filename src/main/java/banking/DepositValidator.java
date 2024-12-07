@@ -27,8 +27,6 @@ public class DepositValidator {
 		}
 
 		switch (accountType) {
-		case "banking.CD":
-			return validateCD();
 		case "banking.Savings":
 			return validateSavings(amount);
 		case "banking.Checking":

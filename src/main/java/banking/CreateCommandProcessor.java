@@ -24,6 +24,8 @@ public class CreateCommandProcessor {
 			double balance = Double.parseDouble(commandSeparated[4]);
 			bank.addAccount(accountId, new CD(accountId, apr, balance));
 			break;
+		default:
+			break;
 		}
 
 	}

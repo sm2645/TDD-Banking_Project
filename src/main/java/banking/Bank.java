@@ -61,4 +61,13 @@ public class Bank {
 		}
 
 	}
+
+	public boolean isValidApr(String apr) {
+		try {
+			double aprValue = Double.parseDouble(apr);
+			return aprValue >= 0 && aprValue <= 10;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
 }
