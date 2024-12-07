@@ -22,7 +22,6 @@ public class MasterControlTest {
 
 	@Test
 	void typo_in_create_command_is_invalid() {
-		List<String> inputs = new ArrayList<>();
 		input.add("creat checking 12345678 1.0");
 
 		List<String> actual = masterControl.start(input);
@@ -63,4 +62,22 @@ public class MasterControlTest {
 		assertEquals(command, actual.get(0));
 	}
 
+// withdraw
+	@Test
+	void typo_in_withdraw_command_is_invalid() {
+		input.add("withdaw 12345678 100");
+
+		List<String> actual = masterControl.start(input);
+		assertEquals(1, actual.size());
+		assertSingleCommand("withdaw 12345678 100", actual);
+	}
+
+	@Test
+	void withdraw_over_checking_limit_is_invalid() {
+		input.add("withdraw 12345678 401");
+
+		List<String> actual = masterControl.start(input);
+		assertEquals(1, actual.size());
+		assertSingleCommand("withdraw 12345678 401", actual);
+	}
 }
