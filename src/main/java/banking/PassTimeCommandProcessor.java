@@ -30,7 +30,7 @@ public class PassTimeCommandProcessor {
 
 			String accountType = account.getAccountType();
 
-			if (accountType.equals("banking.Savings")) {
+			if (accountType.equals("Savings")) {
 				((Savings) account).resetWithdrawals();
 
 			}
@@ -43,7 +43,7 @@ public class PassTimeCommandProcessor {
 				account.withdraw(25);
 				continue;
 			}
-			if (accountType.equals("banking.CD")) {
+			if (accountType.equals("CD")) {
 				for (int i = 0; i < 4; i++) {
 					account.accrueApr();
 				}

@@ -22,7 +22,7 @@ public class Savings extends Accounts {
 
 	@Override
 	public String getAccountType() {
-		return "banking.Savings";
+		return "Savings";
 	}
 
 }

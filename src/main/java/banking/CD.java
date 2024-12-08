@@ -7,7 +7,7 @@ public class CD extends Accounts {
 
 	@Override
 	public String getAccountType() {
-		return "banking.CD";
+		return "CD";
 	}
 
 }

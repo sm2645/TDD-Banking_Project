@@ -28,9 +28,9 @@ public class WithdrawValidator {
 
 			String accountType = account.getAccountType();
 			switch (accountType) {
-			case "banking.Savings":
+			case "Savings":
 				return validateWithdrawalFromSavings((Savings) account, amount);
-			case "banking.Checking":
+			case "Checking":
 				return validateWithdrawalFromChecking(amount);
 			default:
 				return validateWithdrawalFromCD(account, amount);

@@ -27,17 +27,13 @@ public class DepositValidator {
 		}
 
 		switch (accountType) {
-		case "banking.Savings":
+		case "Savings":
 			return validateSavings(amount);
-		case "banking.Checking":
+		case "Checking":
 			return validateChecking(amount);
 		default:
 			return false;
 		}
-	}
-
-	private boolean validateCD() {
-		return false;
 	}
 
 	private boolean validateSavings(String amount) {

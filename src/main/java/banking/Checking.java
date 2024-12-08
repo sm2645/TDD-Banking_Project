@@ -8,7 +8,7 @@ public class Checking extends Accounts {
 
 	@Override
 	public String getAccountType() {
-		return "banking.Checking";
+		return "Checking";
 	}
 
 }

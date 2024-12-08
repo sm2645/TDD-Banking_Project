@@ -23,8 +23,8 @@ public class TransferValidator {
 		Accounts senderAccount = bank.retrieveAccount(senderId);
 		Accounts receiverAccount = bank.retrieveAccount(receiverId);
 
-		if (senderAccount == null || receiverAccount == null || senderAccount.getAccountType().equals("banking.CD")
-				|| receiverAccount.getAccountType().equals("banking.CD")) {
+		if (senderAccount == null || receiverAccount == null || senderAccount.getAccountType().equals("CD")
+				|| receiverAccount.getAccountType().equals("CD")) {
 			return false;
 		}
 
@@ -35,13 +35,11 @@ public class TransferValidator {
 		}
 
 		String senderAccountType = senderAccount.getAccountType();
-		switch (senderAccountType) {
-		case "banking.Savings":
+		if (senderAccountType.equals("Savings")) {
 			Savings savingsAccount = (Savings) senderAccount;
 			return validateSavingsTransfer(savingsAccount, amount);
-		default:
-			return validateCheckingTransfer(amount);
 		}
+		return validateCheckingTransfer(amount);
 	}
 
 	private boolean validateSavingsTransfer(Savings savingsAccount, double amount) {
