@@ -1,9 +1,9 @@
 package banking;
 
-public class TransferCommandProcessor {
+public class TransferComandProcessor {
 	private final Bank bank;
 
-	public TransferCommandProcessor(Bank bank) {
+	public TransferComandProcessor(Bank bank) {
 		this.bank = bank;
 	}
 

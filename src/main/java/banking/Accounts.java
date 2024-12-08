@@ -1,5 +1,7 @@
 package banking;
 
+import java.text.DecimalFormat;
+
 public abstract class Accounts {
 	private final double APR;
 	private final String ID;
@@ -51,4 +53,10 @@ public abstract class Accounts {
 
 	public abstract String getAccountType();
 
+	public void accrueApr() {
+		double monthlyRate = (APR / 100) / 12;
+		balance += balance * monthlyRate;
+		balance = Double.parseDouble(new DecimalFormat("0.00").format(balance));
+
+	}
 }

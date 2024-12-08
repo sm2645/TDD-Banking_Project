@@ -16,6 +16,10 @@ public class Savings extends Accounts {
 		alreadyWithdrawalsMonth = !alreadyWithdrawalsMonth;
 	}
 
+	void resetWithdrawals() {
+		alreadyWithdrawalsMonth = false;
+	}
+
 	@Override
 	public String getAccountType() {
 		return "banking.Savings";

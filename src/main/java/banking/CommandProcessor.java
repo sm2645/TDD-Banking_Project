@@ -4,13 +4,15 @@ public class CommandProcessor {
 	private final CreateCommandProcessor createProcessor;
 	private final DepositCommandProcessor depositProcessor;
 	private final WithdrawCommandProcessor withdrawProcessor;
-	private final TransferCommandProcessor transferProcessor;
+	private final TransferComandProcessor transferProcessor;
+	private final PassTimeCommandProcessor passTimeProcessor;
 
 	public CommandProcessor(Bank bank) {
 		this.createProcessor = new CreateCommandProcessor(bank);
 		this.depositProcessor = new DepositCommandProcessor(bank);
 		this.withdrawProcessor = new WithdrawCommandProcessor(bank);
-		this.transferProcessor = new TransferCommandProcessor(bank);
+		this.transferProcessor = new TransferComandProcessor(bank);
+		this.passTimeProcessor = new PassTimeCommandProcessor(bank);
 	}
 
 	public void process(String command) {
@@ -31,6 +33,8 @@ public class CommandProcessor {
 		case "transfer":
 			transferProcessor.process(commandSeparated);
 			break;
+		case "pass":
+			passTimeProcessor.process(commandSeparated);
 		default:
 			break;
 		}
