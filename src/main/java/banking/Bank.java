@@ -1,6 +1,10 @@
 package banking;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Bank {
@@ -59,7 +63,6 @@ public class Bank {
 		} catch (NumberFormatException e) {
 			return false;
 		}
-
 	}
 
 	public boolean isValidApr(String apr) {
@@ -69,5 +72,26 @@ public class Bank {
 		} catch (NumberFormatException e) {
 			return false;
 		}
+	}
+
+	// Method to format account details for output
+	public List<String> formattedAccDetails() {
+		List<String> formattedDetails = new ArrayList<>();
+		DecimalFormat decimalFormat = new DecimalFormat("0.00");
+		decimalFormat.setRoundingMode(RoundingMode.FLOOR);
+
+		for (Accounts account : accounts.values()) {
+			String accountType = account.getAccountType();
+			String id = account.getID();
+			String balance = decimalFormat.format(account.getBalance());
+			String apr = decimalFormat.format(account.getAPR());
+			String accountState = accountType + " " + id + " " + balance + " " + apr;
+			formattedDetails.add(accountState);
+
+			// Add transaction history for the account
+			formattedDetails.addAll(account.getTransactionHistory());
+		}
+
+		return formattedDetails;
 	}
 }

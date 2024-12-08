@@ -1,10 +1,13 @@
 package banking;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Accounts {
 	private final double APR;
 	private final String ID;
+	private final List<String> transactionHistory;
 	private double balance;
 	private int accountAge;
 
@@ -13,6 +16,7 @@ public abstract class Accounts {
 		this.APR = APR;
 		this.ID = ID;
 		this.accountAge = 0;
+		this.transactionHistory = new ArrayList<>();
 
 	}
 
@@ -58,5 +62,9 @@ public abstract class Accounts {
 		balance += balance * monthlyRate;
 		balance = Double.parseDouble(new DecimalFormat("0.00").format(balance));
 
+	}
+
+	public List<String> getTransactionHistory() {
+		return transactionHistory;
 	}
 }

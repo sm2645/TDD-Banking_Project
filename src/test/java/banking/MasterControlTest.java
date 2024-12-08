@@ -11,13 +11,15 @@ import org.junit.jupiter.api.Test;
 public class MasterControlTest {
 	MasterControl masterControl;
 	List<String> input;
+	private Bank bank;
 
 	@BeforeEach
 	void setUp() {
 		input = new ArrayList<>();
-		Bank bank = new Bank();
+		bank = new Bank();
 
-		masterControl = new MasterControl(new CommandValidator(bank), new CommandProcessor(bank), new CommandStorage());
+		masterControl = new MasterControl(new CommandValidator(bank), new CommandProcessor(bank), new CommandStorage(),
+				bank);
 	}
 
 	@Test
@@ -79,5 +81,32 @@ public class MasterControlTest {
 		List<String> actual = masterControl.start(input);
 		assertEquals(1, actual.size());
 		assertSingleCommand("withdraw 12345678 401", actual);
+	}
+
+	@Test
+	void multiple_commands_test() {
+		// Adding input commands to the list
+		input.add("create savings 12345678 0.6"); // create a new savings account
+		input.add("deposit 12345678 700"); // deposit $700 into savings
+		input.add("deposit 12345678 5000"); // invalid, amount too high
+		input.add("creAte cHecKing 98765432 0.01"); // case insensitive command
+		input.add("deposit 98765432 300"); // deposit $300 into checking
+		input.add("transfer 98765432 12345678 300"); // transfer $300 from checking to savings
+		input.add("pass 1"); // Pass 1 month of time
+		input.add("create cd 23456789 1.2 2000"); // create a new CD with 1.2% APR $2000
+
+		// Execute commands through MasterControl
+		List<String> actual = masterControl.start(input);
+
+		// Expected output after processing the commands
+		List<String> expected = new ArrayList<>();
+		expected.add("Savings 12345678 1000.50 0.60"); // current state of savings account
+		expected.add("deposit 12345678 700"); // transaction history for savings account
+		expected.add("transfer 98765432 12345678 300"); // transaction history for checking account
+		expected.add("Cd 23456789 2000.00 1.20"); // current state of CD account
+		expected.add("deposit 12345678 5000"); // invalid command due to amount too high
+
+		// Assert that the output matches the expected result
+		assertEquals(expected, actual);
 	}
 }
