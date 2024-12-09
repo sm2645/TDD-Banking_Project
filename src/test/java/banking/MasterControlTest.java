@@ -10,14 +10,13 @@ import org.junit.jupiter.api.Test;
 
 public class MasterControlTest {
 	MasterControl masterControl;
-	List<String> input;
-	private Bank bank;
+	List<String> input, expected;
 
 	@BeforeEach
 	void setUp() {
 		input = new ArrayList<>();
-		bank = new Bank();
-
+		expected = new ArrayList<>();
+		Bank bank = new Bank();
 		masterControl = new MasterControl(new CommandValidator(bank), new CommandProcessor(bank), new CommandStorage(),
 				bank);
 	}
@@ -56,7 +55,10 @@ public class MasterControlTest {
 		input.add("create checking 12345678 1.0");
 		input.add("create checking 12345678 1.0");
 		List<String> actual = masterControl.start(input);
-		assertSingleCommand("create checking 12345678 1.0", actual);
+
+		expected.add("Checking 12345678 0.00 1.00");
+		expected.add("create checking 12345678 1.0");
+		assertEquals(expected, actual);
 	}
 
 	private void assertSingleCommand(String command, List<String> actual) {
@@ -84,29 +86,60 @@ public class MasterControlTest {
 	}
 
 	@Test
-	void multiple_commands_test() {
-		// Adding input commands to the list
-		input.add("create savings 12345678 0.6"); // create a new savings account
-		input.add("deposit 12345678 700"); // deposit $700 into savings
-		input.add("deposit 12345678 5000"); // invalid, amount too high
-		input.add("creAte cHecKing 98765432 0.01"); // case insensitive command
-		input.add("deposit 98765432 300"); // deposit $300 into checking
-		input.add("transfer 98765432 12345678 300"); // transfer $300 from checking to savings
-		input.add("pass 1"); // Pass 1 month of time
-		input.add("create cd 23456789 1.2 2000"); // create a new CD with 1.2% APR $2000
+	void multiple_commands_with_invalid_and_valid_tests() {
+		input.add("create savings 12345678 0.6");
+		input.add("deposit 12345678 700");
+		input.add("deposit 12345678 5000");
+		input.add("creAte cHecKing 98765432 0.01");
+		input.add("deposit 98765432 300");
+		input.add("transfer 98765432 12345678 300");
+		input.add("pass 1");
+		input.add("doesnt work");
+		input.add("create cd 23456789 1.2 2000");
 
-		// Execute commands through MasterControl
 		List<String> actual = masterControl.start(input);
 
-		// Expected output after processing the commands
-		List<String> expected = new ArrayList<>();
-		expected.add("Savings 12345678 1000.50 0.60"); // current state of savings account
-		expected.add("deposit 12345678 700"); // transaction history for savings account
-		expected.add("transfer 98765432 12345678 300"); // transaction history for checking account
-		expected.add("Cd 23456789 2000.00 1.20"); // current state of CD account
-		expected.add("deposit 12345678 5000"); // invalid command due to amount too high
+		expected.add("Savings 12345678 1000.50 0.60");
+		expected.add("deposit 12345678 700");
+		expected.add("transfer 98765432 12345678 300");
+		expected.add("Cd 23456789 2000.00 1.20");
+		expected.add("deposit 12345678 5000");
+		expected.add("doesnt work");
 
-		// Assert that the output matches the expected result
 		assertEquals(expected, actual);
 	}
+
+	@Test
+	void transfer_from_checking_to_savings() {
+		input.add("create checking 12345678 1.0");
+		input.add("create savings 98765432 1.5");
+		input.add("deposit 12345678 1000");
+		input.add("transfer 12345678 98765432 200");
+
+		List<String> actual = masterControl.start(input);
+		expected.add("Checking 12345678 800.00 1.00");
+		expected.add("deposit 12345678 1000");
+		expected.add("transfer 12345678 98765432 200");
+		expected.add("Savings 98765432 200.00 1.50");
+		expected.add("transfer 12345678 98765432 200");
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void transfer_from_checking_to_cd_is_invalid() {
+		input.add("create checking 12345678 1.0");
+		input.add("create cd 98765432 2.0 5000");
+		input.add("deposit 12345678 1000");
+		input.add("transfer 12345678 98765432 500");
+
+		List<String> actual = masterControl.start(input);
+		expected.add("Checking 12345678 1000.00 1.00");
+		expected.add("deposit 12345678 1000");
+		expected.add("Cd 98765432 5000.00 2.00");
+		expected.add("transfer 12345678 98765432 500");
+
+		assertEquals(expected, actual);
+	}
+
 }

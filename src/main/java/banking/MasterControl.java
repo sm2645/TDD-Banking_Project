@@ -26,7 +26,7 @@ public class MasterControl {
 			}
 		}
 		List<String> output = new ArrayList<>();
-		output.addAll(bank.formattedAccDetails());
+		output.addAll(bank.formattedAccDetails()); // This will now return accounts in the creation order
 		output.addAll(commandStorage.getInvalidCommands());
 		return output;
 	}

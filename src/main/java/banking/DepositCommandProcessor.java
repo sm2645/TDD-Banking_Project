@@ -12,5 +12,6 @@ public class DepositCommandProcessor {
 		double depositAmount = Double.parseDouble(commandSeparated[2]);
 
 		bank.retrieveAccount(accountId).deposit(depositAmount);
+		bank.retrieveAccount(accountId).logTransaction(String.join(" ", commandSeparated));
 	}
 }

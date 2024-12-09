@@ -43,7 +43,7 @@ public class PassTimeCommandProcessor {
 				account.withdraw(25);
 				continue;
 			}
-			if (accountType.equals("CD")) {
+			if (accountType.equals("Cd")) {
 				for (int i = 0; i < 4; i++) {
 					account.accrueApr();
 				}

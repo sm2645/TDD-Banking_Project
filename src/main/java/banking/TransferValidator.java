@@ -23,8 +23,8 @@ public class TransferValidator {
 		Accounts senderAccount = bank.retrieveAccount(senderId);
 		Accounts receiverAccount = bank.retrieveAccount(receiverId);
 
-		if (senderAccount == null || receiverAccount == null || senderAccount.getAccountType().equals("CD")
-				|| receiverAccount.getAccountType().equals("CD")) {
+		if (senderAccount == null || receiverAccount == null || senderAccount.getAccountType().equals("Cd")
+				|| receiverAccount.getAccountType().equals("Cd")) {
 			return false;
 		}
 

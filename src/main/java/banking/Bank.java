@@ -9,9 +9,11 @@ import java.util.Map;
 
 public class Bank {
 	private final Map<String, Accounts> accounts;
+	private final List<String> creationOrder; // To track the order of creation
 
 	public Bank() {
 		accounts = new HashMap<>();
+		creationOrder = new ArrayList<>();
 	}
 
 	public Map<String, Accounts> getAccounts() {
@@ -20,6 +22,7 @@ public class Bank {
 
 	public void addAccount(String accountId, Accounts accountName) {
 		accounts.put(accountId, accountName);
+		creationOrder.add(accountId); // Track the order of account creation
 	}
 
 	public Accounts retrieveAccount(String accountId) {
@@ -74,13 +77,21 @@ public class Bank {
 		}
 	}
 
-	// Method to format account details for output
+	// Method to format account details for output in creation order
 	public List<String> formattedAccDetails() {
 		List<String> formattedDetails = new ArrayList<>();
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
 		decimalFormat.setRoundingMode(RoundingMode.FLOOR);
 
-		for (Accounts account : accounts.values()) {
+		// Iterate over creation order to maintain the order of creation
+		for (String accountId : creationOrder) {
+			Accounts account = accounts.get(accountId);
+
+			// Skip if account doesn't exist (i.e., account is null)
+			if (account == null) {
+				continue;
+			}
+
 			String accountType = account.getAccountType();
 			String id = account.getID();
 			String balance = decimalFormat.format(account.getBalance());

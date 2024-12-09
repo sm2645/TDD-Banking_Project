@@ -12,5 +12,6 @@ public class WithdrawCommandProcessor {
 		double withdrawAmount = Double.parseDouble(commandSeparated[2]);
 
 		bank.retrieveAccount(accountId).withdraw(withdrawAmount);
+		bank.retrieveAccount(accountId).logTransaction(String.join(" ", commandSeparated));
 	}
 }

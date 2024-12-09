@@ -64,7 +64,12 @@ public abstract class Accounts {
 
 	}
 
+	void logTransaction(String transaction) {
+		transactionHistory.add(transaction);
+	}
+
 	public List<String> getTransactionHistory() {
 		return transactionHistory;
 	}
+
 }

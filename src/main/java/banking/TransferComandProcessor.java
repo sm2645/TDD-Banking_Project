@@ -14,6 +14,8 @@ public class TransferComandProcessor {
 
 		bank.retrieveAccount(senderAccountId).withdraw(transferAmount);
 		bank.retrieveAccount(receiverAccountId).deposit(transferAmount);
+		bank.retrieveAccount(senderAccountId).logTransaction(String.join(" ", commandSeparated));
+		bank.retrieveAccount(receiverAccountId).logTransaction(String.join(" ", commandSeparated));
 
 	}
 }

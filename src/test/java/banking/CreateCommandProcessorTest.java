@@ -96,7 +96,7 @@ class CreateCommandProcessorTest {
 	@Test
 	public void create_cd_command_actually_creates_a_cd_type_account() {
 		commandProcessor.process("create cd 01234567 1 1000");
-		assertEquals("CD", bank.retrieveAccount("01234567").getAccountType());
+		assertEquals("Cd", bank.retrieveAccount("01234567").getAccountType());
 
 	}
 
