@@ -1,7 +1,6 @@
 package banking;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +18,10 @@ class TransferValidatorTest {
 		bank.addAccount("12345678", new Checking("12345678", 0.01));
 		bank.depositToAccount("12345678", 1000.0);
 		bank.addAccount("12345679", new Checking("12345679", 0.01));
-		bank.depositToAccount("12345678", 1000.0);
 
 		bank.addAccount("87654321", new Savings("87654321", 0.01));
-		bank.depositToAccount("87654321", 1000.0);
+		bank.depositToAccount("87654321", 1500.0);
 		bank.addAccount("87654329", new Savings("87654329", 0.01));
-		bank.depositToAccount("87654321", 1000.0);
 
 		bank.addAccount("22345678", new CD("22345678", 2.5, 1000));
 		bank.addAccount("22345679", new CD("22345679", 2.5, 1000));
@@ -218,4 +215,30 @@ class TransferValidatorTest {
 	void transfer_a_negative_amount_from_checking_to_checking_is_invalid() {
 		assertFalse(commandValidator.validate("transfer 12345678 12345679 -1"));
 	}
+
+	@Test
+	void transfer_more_than_senders_balance_from_checking_to_checking_is_invalid() {
+		commandValidator.validate("transfer 12345679 12345678 100 ");
+		assertEquals(1000, bank.retrieveAccount("12345678").getBalance());
+	}
+
+	@Test
+	void transfer_more_than_senders_balance_from_checking_to_saving_is_valid() {
+		commandValidator.validate("transfer 12345679 87654321 -1");
+		assertEquals(1500, bank.retrieveAccount("87654321").getBalance());
+
+	}
+
+	@Test
+	void transfer_more_than_senders_balance_from_saving_to_checking_is_valid() {
+		commandValidator.validate("transfer 87654321 12345678 100");
+		assertEquals(1000, bank.retrieveAccount("12345678").getBalance());
+	}
+
+	@Test
+	void transfer_more_than_senders_balance_from_saving_to_saving_is_valid() {
+		commandValidator.validate("transfer 87654329 87654321 100");
+		assertEquals(1500, bank.retrieveAccount("87654321").getBalance());
+	}
+
 }

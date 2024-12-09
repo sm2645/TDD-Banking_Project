@@ -77,7 +77,6 @@ public class Bank {
 		}
 	}
 
-	// Method to format account details for output in creation order
 	public List<String> formattedAccDetails() {
 		List<String> formattedDetails = new ArrayList<>();
 		DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -99,8 +98,18 @@ public class Bank {
 			String accountState = accountType + " " + id + " " + balance + " " + apr;
 			formattedDetails.add(accountState);
 
-			// Add transaction history for the account
-			formattedDetails.addAll(account.getTransactionHistory());
+			// Capitalize the first letter of each item in the transaction history
+			List<String> transactionHistory = account.getTransactionHistory();
+			for (int i = 0; i < transactionHistory.size(); i++) {
+				String transaction = transactionHistory.get(i);
+				if (transaction != null && !transaction.isEmpty()) {
+					// Capitalize the first letter of each transaction
+					transactionHistory.set(i, transaction.substring(0, 1).toUpperCase() + transaction.substring(1));
+				}
+			}
+
+			// Add the formatted transaction history
+			formattedDetails.addAll(transactionHistory);
 		}
 
 		return formattedDetails;
