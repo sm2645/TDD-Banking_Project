@@ -35,6 +35,7 @@ public class CommandProcessor {
 			break;
 		case "pass":
 			passTimeProcessor.process(commandSeparated);
+			break;
 		default:
 			break;
 		}

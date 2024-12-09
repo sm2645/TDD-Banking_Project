@@ -96,12 +96,14 @@ public class MasterControlTest {
 		input.add("pass 1");
 		input.add("doesnt work");
 		input.add("create cd 23456789 1.2 2000");
+		input.add("withdraw 12345678 200");
 
 		List<String> actual = masterControl.start(input);
 
-		expected.add("Savings 12345678 1000.50 0.60");
+		expected.add("Savings 12345678 800.50 0.60");
 		expected.add("deposit 12345678 700");
 		expected.add("transfer 98765432 12345678 300");
+		expected.add("withdraw 12345678 200");
 		expected.add("Cd 23456789 2000.00 1.20");
 		expected.add("deposit 12345678 5000");
 		expected.add("doesnt work");
