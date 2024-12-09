@@ -278,7 +278,7 @@ public class MasterControlTest {
 	}
 
 	@Test
-	void handle_invalid_transfer_command() {
+	void handles_invalid_transfer_commands_as_single_invalid() {
 		input.add("Create checking 12345678 0.5");
 		input.add("Create savings 98765432 1.0");
 		input.add("Transfer 12345678 12345679 500"); // Invalid
